@@ -1,19 +1,36 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import {
+  ReactElement,
+  JSXElementConstructor,
+  ReactFragment,
+  ReactPortal,
+} from "react";
 import { FlatList, View } from "react-native";
 import styled from "styled-components/native";
 import { CATEGORIES } from "../data/list-data";
-const Wrapper = styled.View`
+interface ITheme {
+  textColor?: string;
+  bgColor?: string;
+}
+interface IData {
+  item: {
+    title: string;
+    chapter: string;
+    subtitle: string | number;
+  };
+}
+const Wrapper = styled.View<ITheme>`
   flex: 1;
-  background-color: ${(props) => props.theme.textColor};
+  background-color: ${(props: any) => props.theme.textColor};
 `;
-const Header = styled.View`
+const Header = styled.View<ITheme>`
   width: 100%;
   height: 35%;
   padding: 10%;
   padding-top: 25%;
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 50px;
-  background-color: ${(props) => props.theme.bgColor};
+  background-color: ${(props: any) => props.theme.bgColor};
 `;
 const Text = styled.Text`
   color: #d4d4d4;
@@ -36,14 +53,14 @@ const Contents = styled.View`
 `;
 
 const TileWrap = styled.TouchableOpacity``;
-const Tile = styled.View`
+const Tile = styled.View<ITheme>`
   width: 160px;
   height: 150px;
   border-radius: 10px;
   padding: 30px;
   margin: 10px;
   justify-content: center;
-  background-color: ${(props) => props.theme.textColor};
+  background-color: ${(props: any) => props.theme.textColor};
   align-items: center;
 `;
 const ChapterText = styled.Text`
@@ -58,7 +75,7 @@ const ChapterSubText = styled.Text`
 const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
   navigation: { navigate },
 }) => {
-  const renderGridItem = (itemData) => {
+  const renderGridItem = (itemData: IData) => {
     return (
       <TileWrap
         onPress={() =>

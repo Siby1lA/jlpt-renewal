@@ -8,6 +8,7 @@
           "validProperties": ["shadow-opacity", "shadow-radius"]
         }
       }
-    ]
+    ],
+    "types": ["@types/styled-components-react-native"]
   }
 }

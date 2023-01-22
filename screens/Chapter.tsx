@@ -1,12 +1,16 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect } from "react";
-import { FlatList, Text, View } from "react-native";
+import { FlatList } from "react-native";
 import styled from "styled-components/native";
-import { CHAPTER } from "../data/list-data";
-
+interface IData {
+  item: {
+    id: string;
+    page: string;
+  };
+}
 const Wrapper = styled.View`
   height: 100%;
-  background-color: ${(props) => props.theme.bgColor};
+  background-color: ${(props: any) => props.theme.bgColor};
   align-items: center;
 `;
 const TileWrap = styled.TouchableOpacity``;
@@ -17,7 +21,7 @@ const Tile = styled.View`
   padding: 30px;
   margin: 10px;
   justify-content: center;
-  background-color: ${(props) => props.theme.textColor};
+  background-color: ${(props: any) => props.theme.textColor};
   align-items: center;
 `;
 const ChapterText = styled.Text`
@@ -33,11 +37,11 @@ const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
   route,
   navigation: { navigate, setOptions },
 }) => {
-  const { title, chapter } = route.params;
+  const { title, chapter }: string | any = route.params;
   useEffect(() => {
     setOptions({ title: `JLPT ${title}` });
   }, []);
-  const renderGridItem = (itemData) => {
+  const renderGridItem = (itemData: IData) => {
     return (
       <TileWrap
         onPress={() =>

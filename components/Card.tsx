@@ -1,7 +1,9 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Animated, PanResponder, View } from "react-native";
 import styled from "styled-components/native";
 import { Feather } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { setHiragana, setImi } from "../redux/actions/TriggerAction";
 const Wrapper = styled(Animated.createAnimatedComponent(View))`
   background-color: ${(props) => props.theme.textColor};
   width: 85%;
@@ -90,9 +92,15 @@ interface IKanji {
     reibunImi: string;
     reibunFurigana: string;
   };
+  pop: any;
 }
 
-const Card = ({ data: KanjiData }: IKanji, huriganaView: boolean) => {
+const Card = ({ data: KanjiData, pop }: IKanji) => {
+  const [index, setIndex] = useState<number>(0);
+  const { isHiragana, isImi, isIten, isReset } = useSelector(
+    (state: any) => state.Trigger
+  );
+  const dispatch = useDispatch();
   const scale = useRef(new Animated.Value(1)).current;
   const position = useRef(new Animated.Value(0)).current;
   const rotation = position.interpolate({
@@ -140,33 +148,43 @@ const Card = ({ data: KanjiData }: IKanji, huriganaView: boolean) => {
       },
       onPanResponderGrant: () => onPressIn.start(),
       onPanResponderRelease: (_, { dx }) => {
+        reset();
         if (dx < -100) {
           goLeft.start(onDismiss);
         } else if (dx > 100) {
           goRight.start(onDismiss);
-          if (index > 50) {
-            console.log("끝");
-          }
         } else {
           Animated.parallel([onPressOut, goCenter]).start();
         }
       },
     })
   ).current;
-  // State
-  const [index, setIndex] = useState<number>(0);
+
   const onDismiss = () => {
     scale.setValue(1);
     setIndex((prev) => prev + 1);
     position.setValue(0);
-    // Animated.timing(position, { toValue: 0, useNativeDriver: true }).start();
   };
-  //   const closePress = () => {
-  //     goLeft.start(onDismiss);
-  //   };
-  //   const checkPress = () => {
-  //     goRight.start(onDismiss);
-  //   };
+  const reset = () => {
+    dispatch(setHiragana(false));
+    dispatch(setImi(false));
+  };
+  useEffect(() => {
+    reset();
+    setIndex(0);
+  }, [isReset]);
+  useEffect(() => {
+    if (index > 0) {
+      //   setIndex((prev) => prev - 1);
+      setIndex(49);
+    }
+  }, [isIten]);
+
+  if (index > 49) {
+    reset();
+    setIndex(0);
+    pop();
+  }
   return (
     <CardContainer>
       <Wrapper style={{ transform: [{ scale: secondScale }] }}>
@@ -177,9 +195,7 @@ const Card = ({ data: KanjiData }: IKanji, huriganaView: boolean) => {
           <FavoritesText>단어장 추가</FavoritesText>
         </FavoritesWrap>
         <KanjiWrap>
-          <HuriganaText>{KanjiData.hurigana[index + 1]}</HuriganaText>
           <KanjiText>{KanjiData.kanji[index + 1]}</KanjiText>
-          <KanjiImiText>{KanjiData.imi[index + 1]}</KanjiImiText>
         </KanjiWrap>
         <ReibunWrap>
           <ReibunBox>
@@ -209,9 +225,11 @@ const Card = ({ data: KanjiData }: IKanji, huriganaView: boolean) => {
           <FavoritesText>단어장 추가</FavoritesText>
         </FavoritesWrap>
         <KanjiWrap>
-          <HuriganaText>{KanjiData.hurigana[index]}</HuriganaText>
+          {isHiragana && (
+            <HuriganaText>{KanjiData.hurigana[index]}</HuriganaText>
+          )}
           <KanjiText>{KanjiData.kanji[index]}</KanjiText>
-          <KanjiImiText>{KanjiData.imi[index]}</KanjiImiText>
+          {isImi && <KanjiImiText>{KanjiData.imi[index]}</KanjiImiText>}
         </KanjiWrap>
         <ReibunWrap>
           <ReibunBox>

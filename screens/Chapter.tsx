@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import { FlatList } from "react-native";
+import { useSelector } from "react-redux";
 import styled from "styled-components/native";
 interface IData {
   item: {

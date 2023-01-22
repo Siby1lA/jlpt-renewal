@@ -1,11 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import {
-  ReactElement,
-  JSXElementConstructor,
-  ReactFragment,
-  ReactPortal,
-} from "react";
-import { FlatList, View } from "react-native";
+import { FlatList } from "react-native";
+import { useSelector } from "react-redux";
 import styled from "styled-components/native";
 import { CATEGORIES } from "../data/list-data";
 interface ITheme {

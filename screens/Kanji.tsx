@@ -1,11 +1,17 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components/native";
 import Data from "../data/data.json";
 import Card from "../components/Card";
-import { Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setHiragana,
+  setImi,
+  setIten,
+  setReset,
+} from "../redux/actions/TriggerAction";
 
 const Container = styled.View`
   flex: 1;
@@ -30,19 +36,28 @@ const NaviText = styled.Text`
 `;
 const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
   route,
-  navigation: { navigate, setOptions },
+  navigation: { setOptions, pop },
 }) => {
   const { id, title, page }: string | any = route.params;
+  const dispatch = useDispatch();
+  const { isHiragana, isImi, isIten, isReset, isResult } = useSelector(
+    (state: any) => state.Trigger
+  );
   useEffect(() => {
     setOptions({ title: `${title} ${page}` });
   }, []);
-  // Values
-  const [huriganaView, setHuriganaView] = useState(false);
+
   return (
     <Container>
-      <Card data={Data[title][id]} />
+      <Card data={Data[title][id]} pop={pop} />
       <Navi>
-        <Btn onPress={() => setHuriganaView((prev) => !prev)}>
+        <Btn
+          onPress={() =>
+            isHiragana
+              ? dispatch(setHiragana(false))
+              : dispatch(setHiragana(true))
+          }
+        >
           <MaterialCommunityIcons
             name="syllabary-hiragana"
             size={30}
@@ -50,7 +65,11 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
           />
           <NaviText>히라가나</NaviText>
         </Btn>
-        <Btn>
+        <Btn
+          onPress={() =>
+            isImi ? dispatch(setImi(false)) : dispatch(setImi(true))
+          }
+        >
           <MaterialCommunityIcons
             name="lightbulb-on-outline"
             size={30}
@@ -58,11 +77,19 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
           />
           <NaviText>의미</NaviText>
         </Btn>
-        <Btn>
+        <Btn
+          onPress={() =>
+            isIten ? dispatch(setIten(false)) : dispatch(setIten(true))
+          }
+        >
           <AntDesign name="arrowleft" size={30} color="#d4d4d4" />
           <NaviText>이전</NaviText>
         </Btn>
-        <Btn>
+        <Btn
+          onPress={() =>
+            isReset ? dispatch(setReset(false)) : dispatch(setReset(true))
+          }
+        >
           <AntDesign name="retweet" size={30} color="#d4d4d4" />
           <NaviText>리셋</NaviText>
         </Btn>

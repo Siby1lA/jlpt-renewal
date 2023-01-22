@@ -7,8 +7,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { ThemeProvider } from "styled-components/native";
 import { darkTheme, lightTheme } from "./styled";
 import Navigator from "./navigation/Navigator";
+import { Provider } from "react-redux";
+import rootReducer from "./redux/reducer";
+import { legacy_createStore as createStore } from "redux";
 
 export default function App() {
+  const store = createStore(rootReducer);
   const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
@@ -54,9 +58,11 @@ export default function App() {
 
   return (
     <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-      <NavigationContainer>
-        <Navigator />
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
+          <Navigator />
+        </NavigationContainer>
+      </Provider>
     </ThemeProvider>
   );
 }

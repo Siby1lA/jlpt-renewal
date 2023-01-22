@@ -81,10 +81,7 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
   return (
     <Wrapper>
       <Header>
-        <Text>JLPT 단어</Text>
-        <Btn onPress={() => navigate("Kanji")}>
-          <Text>테스트 하러 가기</Text>
-        </Btn>
+        <Text>JLPT 단어 리뉴얼 테스트</Text>
       </Header>
 
       <Contents>

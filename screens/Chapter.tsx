@@ -39,7 +39,15 @@ const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
   }, []);
   const renderGridItem = (itemData) => {
     return (
-      <TileWrap>
+      <TileWrap
+        onPress={() =>
+          navigate("Kanji", {
+            id: itemData.item.id,
+            title: title,
+            page: itemData.item.page,
+          })
+        }
+      >
         <Tile>
           <ChapterText>{title}</ChapterText>
           <ChapterSubText>{itemData.item.page}</ChapterSubText>

@@ -26,13 +26,7 @@ const Root = () => (
       component={Home}
     />
     <Nav.Screen name="Chapter" component={Chapter} />
-    <Nav.Screen
-      options={{
-        headerTitle: "한자",
-      }}
-      name="Kanji"
-      component={Kanji}
-    />
+    <Nav.Screen name="Kanji" component={Kanji} />
   </Nav.Navigator>
 );
 

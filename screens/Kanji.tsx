@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Animated, PanResponder, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import styled from "styled-components/native";
@@ -42,7 +42,14 @@ const Text = styled.Text`
   font-weight: 400;
   color: ${(props) => props.theme.bgColor};
 `;
-const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = () => {
+const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
+  route,
+  navigation: { navigate, setOptions },
+}) => {
+  const { id, title, page } = route.params;
+  useEffect(() => {
+    setOptions({ title: `${title} ${page}` });
+  }, []);
   // Values
   const scale = useRef(new Animated.Value(1)).current;
   const position = useRef(new Animated.Value(0)).current;
@@ -119,7 +126,7 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = () => {
     <Container>
       <CardContainer>
         <Card style={{ transform: [{ scale: secondScale }] }}>
-          <Text>{Data.N5.chapter1.kanji[index + 1]}</Text>
+          <Text>{Data[title][id].kanji[index + 1]}</Text>
         </Card>
         <Card
           {...panResponder.panHandlers}
@@ -131,7 +138,7 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = () => {
             ],
           }}
         >
-          <Text>{Data.N5.chapter1.kanji[index]}</Text>
+          <Text>{Data[title][id].kanji[index]}</Text>
         </Card>
       </CardContainer>
       <BtnContainer>

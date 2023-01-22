@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { FlatList, View } from "react-native";
 import styled from "styled-components/native";
-import { CATEGORIES } from "../data/dummy-data";
+import { CATEGORIES } from "../data/list-data";
 const Wrapper = styled.View`
   flex: 1;
   background-color: ${(props) => props.theme.textColor};
@@ -60,7 +60,14 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
 }) => {
   const renderGridItem = (itemData) => {
     return (
-      <TileWrap onPress={() => navigate("Kanji")}>
+      <TileWrap
+        onPress={() =>
+          navigate("Chapter", {
+            title: itemData.item.title,
+            chapter: itemData.item.chapter,
+          })
+        }
+      >
         <Tile>
           <ChapterText>{itemData.item.title}</ChapterText>
           <ChapterSubText>

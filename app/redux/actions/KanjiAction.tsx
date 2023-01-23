@@ -3,12 +3,7 @@ export const setWhat = (data: number[]) => ({
   data: data,
 });
 
-export const setId = (data: string) => ({
-  type: "SET_ID",
-  data: data,
-});
-
-export const setTitle = (data: string) => ({
-  type: "SET_TITLE",
+export const setChapter = (data: string[]) => ({
+  type: "SET_CHAPTER",
   data: data,
 });

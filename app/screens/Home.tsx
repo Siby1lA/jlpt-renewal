@@ -1,8 +1,11 @@
+import AsyncStorage from "@react-native-community/async-storage";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useEffect } from "react";
 import { FlatList } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/native";
 import { CATEGORIES } from "../data/list-data";
+import { setChapter } from "../redux/actions/KanjiAction";
 interface ITheme {
   textColor?: string;
   bgColor?: string;
@@ -22,7 +25,7 @@ const Header = styled.View<ITheme>`
   width: 100%;
   height: 35%;
   padding: 10%;
-  padding-top: 25%;
+  padding-top: 20%;
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 50px;
   background-color: ${(props: any) => props.theme.bgColor};
@@ -32,12 +35,8 @@ const Text = styled.Text`
   font-weight: 500;
   font-size: 30px;
 `;
-const Btn = styled.TouchableWithoutFeedback``;
 const Contents = styled.View`
-  flex: 1;
   margin: 10px;
-  justify-content: center;
-  align-items: center;
   shadow-offset: {
     width: 0;
     height: 1;
@@ -47,16 +46,19 @@ const Contents = styled.View`
   bottom: 50px;
 `;
 
-const TileWrap = styled.TouchableOpacity``;
+const TileWrap = styled.TouchableOpacity`
+  width: 10%;
+  flex-grow: 1;
+`;
 const Tile = styled.View<ITheme>`
-  width: 160px;
-  height: 150px;
   border-radius: 10px;
-  padding: 30px;
+  padding: 40px;
   margin: 10px;
-  justify-content: center;
   background-color: ${(props: any) => props.theme.textColor};
   align-items: center;
+`;
+const Tiled = styled(Tile)`
+  background-color: #aeadad;
 `;
 const ChapterText = styled.Text`
   font-size: 35px;
@@ -70,6 +72,14 @@ const ChapterSubText = styled.Text`
 const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
   navigation: { navigate },
 }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    //redux-persit + asyncstorage 변경 예정
+    AsyncStorage.getItem("VIEWED", (err: unknown, result: any) => {
+      dispatch(setChapter(JSON.parse(result)));
+    });
+  }, []);
+  const { isChapter } = useSelector((state: any) => state.Kanji);
   const renderGridItem = (itemData: IData) => {
     return (
       <TileWrap
@@ -80,20 +90,32 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
           })
         }
       >
-        <Tile>
-          <ChapterText>{itemData.item.title}</ChapterText>
-          <ChapterSubText>
-            {itemData.item.subtitle}
-            {itemData.item.subtitle !== "즐겨찾기" && "단어"}
-          </ChapterSubText>
-        </Tile>
+        {isChapter &&
+        isChapter.lenth !== 0 &&
+        isChapter[0] === itemData.item.title ? (
+          <Tiled>
+            <ChapterText>{itemData.item.title}</ChapterText>
+            <ChapterSubText>
+              {itemData.item.subtitle}
+              {itemData.item.subtitle !== "즐겨찾기" && "단어"}
+            </ChapterSubText>
+          </Tiled>
+        ) : (
+          <Tile>
+            <ChapterText>{itemData.item.title}</ChapterText>
+            <ChapterSubText>
+              {itemData.item.subtitle}
+              {itemData.item.subtitle !== "즐겨찾기" && "단어"}
+            </ChapterSubText>
+          </Tile>
+        )}
       </TileWrap>
     );
   };
   return (
     <Wrapper>
       <Header>
-        <Text>JLPT 단어 리뉴얼 테스트</Text>
+        <Text>JLPT 단어</Text>
       </Header>
 
       <Contents>

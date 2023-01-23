@@ -4,6 +4,7 @@ import styled from "styled-components/native";
 import { Feather } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { setHiragana, setImi, setReinun } from "../redux/actions/TriggerAction";
+import AsyncStorage from "@react-native-community/async-storage";
 
 const Wrapper = styled(Animated.createAnimatedComponent(View))`
   background-color: ${(props) => props.theme.textColor};
@@ -80,7 +81,7 @@ const FavoritesWrap = styled.View`
 const FavoritesText = styled.Text`
   font-size: 12px;
   margin-top: 5px;
-  color: gray;
+  color: #27272a;
 `;
 const FavoritesIcon = styled.View`
   align-items: center;
@@ -96,12 +97,11 @@ interface IKanji {
     reibunFurigana: string;
   };
   pop: any;
-  id: string;
-  title: string;
+  viewed: boolean;
 }
-let WhatLangIndex: number[] = [];
+let count: number = 0;
 
-const Card = ({ data: KanjiData, pop, id, title }: IKanji) => {
+const Card = ({ data: KanjiData, pop, viewed }: IKanji) => {
   const [index, setIndex] = useState<number>(0);
   const [state, setState] = useState<number>(0);
   const { isHiragana, isImi, isReibun, isReset } = useSelector(
@@ -182,11 +182,13 @@ const Card = ({ data: KanjiData, pop, id, title }: IKanji) => {
   const onDismissRight = () => {
     scale.setValue(1);
     setIndex((prev) => prev + 1);
+    count++;
     position.setValue(0);
   };
   const onDismissLeft = () => {
     scale.setValue(1);
     setIndex((prev) => prev - 1);
+    count--;
     position.setValue(0);
   };
   const reset = () => {
@@ -200,19 +202,10 @@ const Card = ({ data: KanjiData, pop, id, title }: IKanji) => {
     setIndex(0);
   }, [isReset]);
 
-  // useEffect(() => {
-  //   // 이전 트리커
-  //   if (index > 0) {
-  //     //   setIndex((prev) => prev - 1);
-  //     setIndex(49);
-  //   }
-  // }, [isIten]);
-
   useEffect(() => {
     // 인덱스 추적
     if (index > KanjiData.imi.length - 1) {
       setTimeout(() => {
-        whatKanji();
         result();
       }, 100);
     }
@@ -221,30 +214,22 @@ const Card = ({ data: KanjiData, pop, id, title }: IKanji) => {
     }
   }, [index]);
 
-  // useEffect(() => {
-  //   // 모르는 단어 인덱스 저장
-  //   if (state === "모름") {
-  //     let kanjiLenth = index - 1;
-  //     WhatLangIndex.push(kanjiLenth);
-  //     // setWhatLangIndex((prev) => [...prev, kanjiLenth]);
-  //     // console.log(0, data);
-  //   }
-  // }, [state]);
+  useEffect(() => {
+    if (viewed) {
+      AsyncStorage.getItem("INDEX", (err: unknown, result: any) => {
+        const savedIndex = JSON.parse(result);
+        setIndex(savedIndex);
+        count = savedIndex;
+      });
+    } else {
+      setIndex(0);
+      count = 0;
+    }
 
-  // useEffect(() => {
-  //   // 이전 방문 챕터 확인
-  //   // 데이터 초기화
-  //   WhatLangIndex = [];
-  //   AsyncStorage.getItem("WHAT", (err: unknown, result: any) => {
-  //     WhatLangIndex = JSON.parse(result);
-  //     // 모르는 단어들 저장해놈
-  //   });
-  // }, []);
-
-  const whatKanji = async () => {
-    // 모르는 단어들 로컬에 저장
-    // await AsyncStorage.setItem("WHAT", JSON.stringify(WhatLangIndex));
-  };
+    return () => {
+      AsyncStorage.setItem("INDEX", JSON.stringify(count));
+    };
+  }, []);
   const result = async () => {
     Alert.alert("끝났습니다!", "뒤로가시겠습니까?", [
       {
@@ -272,35 +257,37 @@ const Card = ({ data: KanjiData, pop, id, title }: IKanji) => {
           // });
           setIndex(0);
           reset();
-          // AsyncStorage.setItem("WHAT", JSON.stringify([]));
         },
       },
     ]);
   };
   return (
     <CardContainer>
-      <Wrapper style={{ transform: [{ scale: secondScale }] }}>
-        <FavoritesWrap>
-          <FavoritesIcon>
-            <Feather name="bookmark" size={34} color="gray" />
-          </FavoritesIcon>
-          <FavoritesText>단어장 추가</FavoritesText>
-        </FavoritesWrap>
-        <KanjiWrap>
-          <KanjiText>
-            {state === 0
-              ? KanjiData.kanji[index - 1]
-              : KanjiData.kanji[index + 1]}
-          </KanjiText>
-        </KanjiWrap>
-        <CountText>
-          {index < 50 ? (
-            index + state + state + "/" + KanjiData.imi.length
-          ) : (
-            <CountText>끝!!</CountText>
-          )}
-        </CountText>
-      </Wrapper>
+      {index + state + state !== 0 ? (
+        <Wrapper style={{ transform: [{ scale: secondScale }] }}>
+          <FavoritesWrap>
+            <FavoritesIcon>
+              <Feather name="bookmark" size={38} color="#27272a" />
+            </FavoritesIcon>
+            <FavoritesText>단어장 추가</FavoritesText>
+          </FavoritesWrap>
+          <KanjiWrap>
+            <KanjiText>
+              {state === 0
+                ? KanjiData.kanji[index - 1]
+                : KanjiData.kanji[index + 1]}
+            </KanjiText>
+          </KanjiWrap>
+          <CountText>
+            {index < 50 ? (
+              index + state + state + "/" + KanjiData.imi.length
+            ) : (
+              <CountText>끝!!</CountText>
+            )}
+          </CountText>
+        </Wrapper>
+      ) : null}
+
       <Wrapper
         {...panResponder.panHandlers}
         style={{
@@ -313,7 +300,7 @@ const Card = ({ data: KanjiData, pop, id, title }: IKanji) => {
       >
         <FavoritesWrap>
           <FavoritesIcon>
-            <Feather name="bookmark" size={34} color="gray" />
+            <Feather name="bookmark" size={38} color="#27272a" />
           </FavoritesIcon>
           <FavoritesText>단어장 추가</FavoritesText>
         </FavoritesWrap>

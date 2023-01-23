@@ -13,6 +13,8 @@ import {
   setReset,
 } from "../redux/actions/TriggerAction";
 import { FontAwesome } from "@expo/vector-icons";
+import { setChapter } from "../redux/actions/KanjiAction";
+import AsyncStorage from "@react-native-community/async-storage";
 
 const Container = styled.View`
   flex: 1;
@@ -44,13 +46,21 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
   const { isHiragana, isImi, isReibun, isReset } = useSelector(
     (state: any) => state.Trigger
   );
+  const { isChapter } = useSelector((state: any) => state.Kanji);
   useEffect(() => {
     navigation.setOptions({ title: `${title} ${page}` });
+    //redux-persit + asyncstorage 변경 예정
+    dispatch(setChapter([title, page]));
+    AsyncStorage.setItem("VIEWED", JSON.stringify([title, page]));
   }, []);
-
+  const viewed =
+    isChapter &&
+    isChapter.lenth !== 0 &&
+    isChapter[0] === title &&
+    isChapter[1] === page;
   return (
     <Container>
-      <Card data={Data[title][id]} pop={navigation.pop} id={id} title={title} />
+      <Card data={Data[title][id]} pop={navigation.pop} viewed={viewed} />
       <Navi>
         <Btn
           onPress={() =>

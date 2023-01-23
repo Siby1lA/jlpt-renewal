@@ -1,7 +1,6 @@
 const init = {
   isWhat: [],
-  isId: "",
-  isTitle: "",
+  isChapter: [],
 };
 export default function (state = init, action: any) {
   switch (action.type) {
@@ -10,15 +9,10 @@ export default function (state = init, action: any) {
         ...state,
         isWhat: action.data,
       };
-    case "SET_ID":
+    case "SET_CHAPTER":
       return {
         ...state,
-        isId: action.data,
-      };
-    case "SET_TITLE":
-      return {
-        ...state,
-        isTitle: action.data,
+        isChapter: action.data,
       };
     default:
       return state;

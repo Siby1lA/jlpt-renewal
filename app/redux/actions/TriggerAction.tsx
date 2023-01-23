@@ -8,8 +8,8 @@ export const setImi = (data: boolean) => ({
   data: data,
 });
 
-export const setIten = (data: boolean) => ({
-  type: "SET_ITEN",
+export const setReinun = (data: boolean) => ({
+  type: "SET_REIBUN",
   data: data,
 });
 

@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "../screens/Home";
 import Chapter from "../screens/Chapter";
 import Kanji from "../screens/Kanji";
-import Colors from "../../constants/Colors";
+import Colors from "../constants/Colors";
 
 const Nav = createNativeStackNavigator();
 

@@ -9,9 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setHiragana,
   setImi,
-  setIten,
+  setReinun,
   setReset,
 } from "../redux/actions/TriggerAction";
+import { FontAwesome } from "@expo/vector-icons";
 
 const Container = styled.View`
   flex: 1;
@@ -36,20 +37,20 @@ const NaviText = styled.Text`
 `;
 const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
   route,
-  navigation: { setOptions, pop },
+  navigation,
 }) => {
   const { id, title, page }: string | any = route.params;
   const dispatch = useDispatch();
-  const { isHiragana, isImi, isIten, isReset, isResult } = useSelector(
+  const { isHiragana, isImi, isReibun, isReset } = useSelector(
     (state: any) => state.Trigger
   );
   useEffect(() => {
-    setOptions({ title: `${title} ${page}` });
+    navigation.setOptions({ title: `${title} ${page}` });
   }, []);
 
   return (
     <Container>
-      <Card data={Data[title][id]} pop={pop} />
+      <Card data={Data[title][id]} pop={navigation.pop} id={id} title={title} />
       <Navi>
         <Btn
           onPress={() =>
@@ -79,11 +80,11 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
         </Btn>
         <Btn
           onPress={() =>
-            isIten ? dispatch(setIten(false)) : dispatch(setIten(true))
+            isReibun ? dispatch(setReinun(false)) : dispatch(setReinun(true))
           }
         >
-          <AntDesign name="arrowleft" size={30} color="#d4d4d4" />
-          <NaviText>이전</NaviText>
+          <FontAwesome name="language" size={30} color="#d4d4d4" />
+          <NaviText>예문</NaviText>
         </Btn>
         <Btn
           onPress={() =>

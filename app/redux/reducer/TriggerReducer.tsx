@@ -1,7 +1,7 @@
 const init = {
   isHiragana: false,
   isImi: false,
-  isIten: false,
+  isReibun: false,
   isReset: false,
 };
 export default function (state = init, action: any) {
@@ -16,10 +16,10 @@ export default function (state = init, action: any) {
         ...state,
         isImi: action.data,
       };
-    case "SET_ITEN":
+    case "SET_REIBUN":
       return {
         ...state,
-        isIten: action.data,
+        isReibun: action.data,
       };
     case "SET_RESET":
       return {

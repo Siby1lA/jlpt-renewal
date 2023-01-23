@@ -5,7 +5,7 @@
       {
         "name": "typescript-styled-plugin",
         "lint": {
-          "validProperties": ["shadow-opacity", "shadow-radius"]
+          "validProperties": "shadow-color,shadow-opacity,shadow-offset"
         }
       }
     ],

@@ -6,9 +6,9 @@ import * as Font from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import { ThemeProvider } from "styled-components/native";
 import { darkTheme, lightTheme } from "./styled";
-import Navigator from "./navigation/Navigator";
+import Navigator from "./app/navigation/Navigator";
 import { Provider } from "react-redux";
-import rootReducer from "./redux/reducer";
+import rootReducer from "./app/redux/reducer";
 import { legacy_createStore as createStore } from "redux";
 
 export default function App() {

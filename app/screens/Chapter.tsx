@@ -12,7 +12,6 @@ interface IData {
 const Wrapper = styled.View`
   flex: 1;
   background-color: ${(props: any) => props.theme.bgColor};
-
   padding: 10px;
 `;
 const TileWrap = styled.TouchableOpacity`
@@ -22,7 +21,7 @@ const TileWrap = styled.TouchableOpacity`
     height: 1;
   }
   shadow-opacity: 0.2;
-  shadow-radius: 6px;
+  shadow-radius: 5px;
 `;
 const Tile = styled.View`
   border-radius: 10px;
@@ -55,7 +54,7 @@ const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
   const { title, chapter }: string | any = route.params;
 
   useEffect(() => {
-    setOptions({ title: `JLPT ${title}` });
+    setOptions({ title: `${title === "내 단어" ? "" : "JLPT"} ${title}` });
   }, []);
 
   const renderGridItem = (itemData: IData) => {

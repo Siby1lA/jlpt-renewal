@@ -4,7 +4,7 @@ import Home from "../screens/Home";
 import Chapter from "../screens/Chapter";
 import Kanji from "../screens/Kanji";
 import Colors from "../constants/Colors";
-import { useColorScheme } from "react-native";
+import MyWord from "../screens/MyWord";
 
 const Nav = createNativeStackNavigator();
 
@@ -28,6 +28,7 @@ const Root = () => (
     />
     <Nav.Screen name="Chapter" component={Chapter} />
     <Nav.Screen name="Kanji" component={Kanji} />
+    <Nav.Screen name="MyWord" component={MyWord} />
   </Nav.Navigator>
 );
 

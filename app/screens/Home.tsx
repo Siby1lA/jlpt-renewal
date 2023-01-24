@@ -58,7 +58,7 @@ const Tile = styled.View<ITheme>`
   align-items: center;
 `;
 const Tiled = styled(Tile)`
-  background-color: #aeadad;
+  background-color: gray;
 `;
 const ChapterText = styled.Text`
   font-size: 30px;
@@ -84,12 +84,16 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
   const renderGridItem = (itemData: IData) => {
     return (
       <TileWrap
-        onPress={() =>
-          navigate("Chapter", {
-            title: itemData.item.title,
-            chapter: itemData.item.chapter,
-          })
-        }
+        onPress={() => {
+          if (itemData.item.title !== "내 단어") {
+            navigate("Chapter", {
+              title: itemData.item.title,
+              chapter: itemData.item.chapter,
+            });
+          } else {
+            navigate("MyWord");
+          }
+        }}
       >
         {isChapter &&
         isChapter.lenth !== 0 &&

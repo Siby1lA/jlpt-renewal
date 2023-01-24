@@ -15,6 +15,7 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import { setChapter } from "../redux/actions/KanjiAction";
 import AsyncStorage from "@react-native-community/async-storage";
+import { useColorScheme } from "react-native";
 
 const Container = styled.View`
   flex: 1;
@@ -35,7 +36,7 @@ const Btn = styled.TouchableOpacity`
 const NaviText = styled.Text`
   font-size: 14px;
   margin-top: 5px;
-  color: #d4d4d4;
+  color: ${(props: any) => props.theme.textColor};
 `;
 const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
   route,
@@ -58,6 +59,7 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
     isChapter.lenth !== 0 &&
     isChapter[0] === title &&
     isChapter[1] === page;
+  const isDark = useColorScheme() === "dark";
   return (
     <Container>
       <Card data={Data[title][id]} pop={navigation.pop} viewed={viewed} />
@@ -72,7 +74,7 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
           <MaterialCommunityIcons
             name="syllabary-hiragana"
             size={30}
-            color="#d4d4d4"
+            color={isDark ? "#d4d4d4" : "#27272a"}
           />
           <NaviText>히라가나</NaviText>
         </Btn>
@@ -84,7 +86,7 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
           <MaterialCommunityIcons
             name="lightbulb-on-outline"
             size={30}
-            color="#d4d4d4"
+            color={isDark ? "#d4d4d4" : "#27272a"}
           />
           <NaviText>의미</NaviText>
         </Btn>
@@ -93,7 +95,11 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
             isReibun ? dispatch(setReibun(false)) : dispatch(setReibun(true))
           }
         >
-          <FontAwesome name="language" size={30} color="#d4d4d4" />
+          <FontAwesome
+            name="language"
+            size={30}
+            color={isDark ? "#d4d4d4" : "#27272a"}
+          />
           <NaviText>예문</NaviText>
         </Btn>
         <Btn
@@ -101,7 +107,11 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
             isReset ? dispatch(setReset(false)) : dispatch(setReset(true))
           }
         >
-          <AntDesign name="retweet" size={30} color="#d4d4d4" />
+          <AntDesign
+            name="retweet"
+            size={30}
+            color={isDark ? "#d4d4d4" : "#27272a"}
+          />
           <NaviText>리셋</NaviText>
         </Btn>
       </Navi>

@@ -7,7 +7,7 @@ import { setHiragana, setImi, setReibun } from "../redux/actions/TriggerAction";
 import AsyncStorage from "@react-native-community/async-storage";
 
 const Wrapper = styled(Animated.createAnimatedComponent(View))`
-  background-color: ${(props) => props.theme.textColor};
+  background-color: ${(props) => props.theme.cardColor};
   width: 86%;
   height: 97%;
   justify-content: space-between;
@@ -22,22 +22,28 @@ const CardContainer = styled.View`
   flex: 1;
   margin-top: 5%;
   align-items: center;
+  shadow-offset: {
+    width: 1;
+    height: 1;
+  }
+  shadow-opacity: 0.2;
+  shadow-radius: 10px;
 `;
 
 const KanjiText = styled.Text`
   font-size: 60px;
   font-weight: 500;
   margin: 5px 0px;
-  color: ${(props: any) => props.theme.bgColor};
+  color: ${(props: any) => props.theme.wordColor};
 `;
 
 const KanjiImiText = styled.Text`
   font-size: 20px;
-  color: ${(props: any) => props.theme.bgColor};
+  color: ${(props: any) => props.theme.wordColor};
 `;
 const HuriganaText = styled.Text`
   font-size: 20px;
-  color: ${(props: any) => props.theme.bgColor};
+  color: ${(props: any) => props.theme.wordColor};
 `;
 const CountText = styled.Text`
   position: absolute;
@@ -53,19 +59,19 @@ const KanjiWrap = styled.View`
 const ReibunWrap = styled.View`
   flex: 1;
   width: 100%;
-  background-color: aliceblue;
+  background-color: ${(props: any) => props.theme.rbColor};
   align-items: center;
   justify-content: center;
   padding: 10px 0px;
   padding-bottom: 30px;
 `;
 const ReinunText = styled.Text`
-  color: ${(props: any) => props.theme.bgColor};
+  color: ${(props: any) => props.theme.wordColor};
   font-size: 20px;
 `;
 const ReibunFurigana = styled(ReinunText)`
   color: #f48fb1;
-  font-size: 12px;
+  font-size: 14px;
 `;
 const ReibunImiText = styled(ReinunText)`
   margin-top: 7px;
@@ -199,7 +205,7 @@ const Card = ({ data: KanjiData, pop, viewed }: IKanji) => {
   useEffect(() => {
     // 리셋 트리거
     reset();
-    setIndex(48);
+    setIndex(0);
   }, [isReset]);
 
   useEffect(() => {
@@ -260,7 +266,7 @@ const Card = ({ data: KanjiData, pop, viewed }: IKanji) => {
             <FavoritesIcon>
               <Feather name="bookmark" size={38} color="#27272a" />
             </FavoritesIcon>
-            <FavoritesText>단어장 추가2</FavoritesText>
+            <FavoritesText>단어장 추가</FavoritesText>
           </FavoritesWrap>
           <KanjiWrap>
             <KanjiText>

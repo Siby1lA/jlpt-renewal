@@ -4,6 +4,7 @@ import Home from "../screens/Home";
 import Chapter from "../screens/Chapter";
 import Kanji from "../screens/Kanji";
 import Colors from "../constants/Colors";
+import { useColorScheme } from "react-native";
 
 const Nav = createNativeStackNavigator();
 

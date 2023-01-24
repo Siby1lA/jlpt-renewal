@@ -12,23 +12,25 @@ interface IData {
 const Wrapper = styled.View`
   flex: 1;
   background-color: ${(props: any) => props.theme.bgColor};
+
+  padding: 10px;
+`;
+const TileWrap = styled.TouchableOpacity`
+  flex-grow: 1;
   shadow-offset: {
     width: 0;
     height: 1;
   }
   shadow-opacity: 0.2;
-  shadow-radius: 10px;
-  padding: 10px;
-`;
-const TileWrap = styled.TouchableOpacity`
-  flex-grow: 1;
+  shadow-radius: 6px;
 `;
 const Tile = styled.View`
   border-radius: 10px;
   padding: 40px;
   margin: 10px;
   justify-content: center;
-  background-color: ${(props: any) => props.theme.textColor};
+  background-color: ${(props: any) => props.theme.cardColor};
+
   align-items: center;
 `;
 const ChapterText = styled.Text`

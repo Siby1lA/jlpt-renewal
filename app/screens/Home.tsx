@@ -19,7 +19,7 @@ interface IData {
 }
 const Wrapper = styled.View<ITheme>`
   flex: 1;
-  background-color: ${(props: any) => props.theme.textColor};
+  background-color: ${(props: any) => props.theme.bgColor};
 `;
 const Header = styled.View<ITheme>`
   width: 100%;
@@ -28,10 +28,10 @@ const Header = styled.View<ITheme>`
   padding-top: 20%;
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 50px;
-  background-color: ${(props: any) => props.theme.bgColor};
+  background-color: ${(props: any) => props.theme.textColor};
 `;
 const Text = styled.Text`
-  color: #d4d4d4;
+  color: ${(props: any) => props.theme.bgColor};
   font-weight: 500;
   font-size: 30px;
 `;
@@ -54,7 +54,7 @@ const Tile = styled.View<ITheme>`
   border-radius: 10px;
   padding: 40px;
   margin: 10px;
-  background-color: ${(props: any) => props.theme.textColor};
+  background-color: ${(props: any) => props.theme.cardColor};
   align-items: center;
 `;
 const Tiled = styled(Tile)`

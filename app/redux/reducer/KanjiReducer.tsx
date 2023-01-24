@@ -1,6 +1,6 @@
 const init = {
   isWhat: [],
-  isChapter: [],
+  isChapter: ["0", "0"],
 };
 export default function (state = init, action: any) {
   switch (action.type) {

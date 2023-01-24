@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import styled from "styled-components/native";
 import CardBtn from "../components/CardBtn";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Card from "../components/Card";
 import { useSelector } from "react-redux";
 const Container = styled.View`
@@ -37,6 +37,7 @@ const NotWord = styled.Text`
   font-weight: 600;
   color: ${(props: any) => props.theme.wordColor};
 `;
+
 const MyWord: React.FC<NativeStackScreenProps<any, "MyWord">> = ({
   navigation,
 }) => {
@@ -45,7 +46,9 @@ const MyWord: React.FC<NativeStackScreenProps<any, "MyWord">> = ({
   useEffect(() => {
     navigation.setOptions({ title: "내 단어" });
     AsyncStorage.getItem("MYWORD", (err: unknown, result: any) => {
-      setKanjiData(JSON.parse(result));
+      if (result) {
+        setKanjiData(JSON.parse(result));
+      }
     });
   }, [isUpdate]);
   return (

@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { setHiragana, setImi, setUpdate } from "../redux/actions/TriggerAction";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Speech from "expo-speech";
 const Wrapper = styled(Animated.createAnimatedComponent(View))`
   background-color: ${(props) => props.theme.cardColor};
@@ -122,6 +122,7 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
   const [index, setIndex] = useState<number>(0);
   const [state, setState] = useState<number>(0);
   const [valid, setValid] = useState<boolean>(false);
+  const [newData, setNewData] = useState<boolean>(false);
   const { isHiragana, isImi, isReibun, isReset, isUpdate } = useSelector(
     (state: any) => state.Trigger
   );
@@ -182,13 +183,18 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
           setState(1);
         }
       },
-      onPanResponderGrant: () => onPressIn.start(),
+      onPanResponderGrant: () => {
+        onPressIn.start();
+      },
       onPanResponderRelease: (_, { dx }) => {
-        reset();
+        // isHiragana ? dispatch(setHiragana(false)) : dispatch(setHiragana(true));
+        // isImi ? dispatch(setImi(false)) : dispatch(setImi(true));
         if (dx < -100) {
+          reset();
           setState(0);
           goLeft.start(onDismissLeft);
         } else if (dx > 100) {
+          reset();
           setState(1);
           goRight.start(onDismissRight);
         } else {
@@ -249,26 +255,30 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
   }, []);
 
   const result = async () => {
-    Alert.alert("끝났습니다!", "뒤로가시겠습니까?", [
-      {
-        text: "네",
-        style: "cancel",
-        onPress: () => {
-          setIndex(0);
-          reset();
-          count = 0;
-          pop();
+    if (!myword) {
+      Alert.alert("끝났습니다!", "뒤로가시겠습니까?", [
+        {
+          text: "네",
+          style: "cancel",
+          onPress: () => {
+            setIndex(0);
+            reset();
+            count = 0;
+            pop();
+          },
         },
-      },
-      {
-        text: "아니오",
-        style: "destructive",
-        onPress: () => {
-          setIndex(0);
-          reset();
+        {
+          text: "아니오",
+          style: "destructive",
+          onPress: () => {
+            setIndex(0);
+            reset();
+          },
         },
-      },
-    ]);
+      ]);
+    } else {
+      setIndex(0);
+    }
   };
 
   const onFavorite = () => {
@@ -316,14 +326,20 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
         obj.myWord.reibun.splice(index, 1);
         AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
         isUpdate ? dispatch(setUpdate(false)) : dispatch(setUpdate(true));
-        setIndex((prev) => prev - 1);
+        if (myword) {
+          setIndex((prev) => prev - 1);
+        } else {
+          setNewData((prev) => !prev);
+        }
       });
     }
   };
 
   const myWorded = (data: string) => {
     AsyncStorage.getItem("MYWORD", (err: unknown, result: any) => {
-      setValid(result.includes(data));
+      if (result) {
+        setValid(result.includes(data));
+      }
     });
     return valid;
   };

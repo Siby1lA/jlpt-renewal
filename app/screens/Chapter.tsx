@@ -62,7 +62,7 @@ const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
         onPress={() => {
           if (
             (isChapter[0] === title && isChapter[1] === itemData.item.page) ||
-            isChapter.length === 0
+            isChapter[0] === "0"
           ) {
             navigate("Kanji", {
               id: itemData.item.id,

@@ -5,7 +5,7 @@ import Data from "../data/data.json";
 import Card from "../components/Card";
 import { useDispatch, useSelector } from "react-redux";
 import { setChapter } from "../redux/actions/KanjiAction";
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import CardBtn from "../components/CardBtn";
 
 const Container = styled.View`
@@ -33,7 +33,12 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
     isChapter[1] === page;
   return (
     <Container>
-      <Card data={Data[title][id]} pop={navigation.pop} viewed={viewed} />
+      <Card
+        data={Data[title][id]}
+        pop={navigation.pop}
+        viewed={viewed}
+        myword={false}
+      />
       <CardBtn />
     </Container>
   );

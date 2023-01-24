@@ -297,35 +297,26 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
               reibunFurigana: [],
             },
           };
-          newObj.myWord.imi.push(KanjiData.imi[index]);
-          newObj.myWord.hurigana.push(KanjiData.hurigana[index]);
-          newObj.myWord.kanji.push(KanjiData.kanji[index]);
-          newObj.myWord.reibunImi.push(KanjiData.reibunImi[index]);
-          newObj.myWord.reibunFurigana.push(KanjiData.reibunFurigana[index]);
-          newObj.myWord.reibun.push(KanjiData.reibun[index]);
+          for (let key in obj.newObj) {
+            newObj.myWord[key].push(KanjiData[key][index]);
+          }
+
           AsyncStorage.setItem("MYWORD", JSON.stringify(newObj));
         } else {
           if (myWorded(KanjiData.imi[index])) {
             AsyncStorage.getItem("MYWORD", (err: unknown, result: any) => {
               let obj = JSON.parse(result);
               let curIdx = obj.myWord.imi.indexOf(KanjiData.imi[index]);
-              obj.myWord.imi.splice(curIdx, 1);
-              obj.myWord.hurigana.splice(curIdx, 1);
-              obj.myWord.kanji.splice(curIdx, 1);
-              obj.myWord.reibunImi.splice(curIdx, 1);
-              obj.myWord.reibunFurigana.splice(curIdx, 1);
-              obj.myWord.reibun.splice(curIdx, 1);
+              for (let key in obj.myWord) {
+                obj.myWord[key].splice(curIdx, 1);
+              }
               AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
               isUpdate ? dispatch(setUpdate(false)) : dispatch(setUpdate(true));
-              AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
             });
           } else {
-            obj.myWord.imi.push(KanjiData.imi[index]);
-            obj.myWord.hurigana.push(KanjiData.hurigana[index]);
-            obj.myWord.kanji.push(KanjiData.kanji[index]);
-            obj.myWord.reibunImi.push(KanjiData.reibunImi[index]);
-            obj.myWord.reibunFurigana.push(KanjiData.reibunFurigana[index]);
-            obj.myWord.reibun.push(KanjiData.reibun[index]);
+            for (let key in obj.myWord) {
+              obj.myWord[key].push(KanjiData[key][index]);
+            }
             AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
           }
         }
@@ -335,12 +326,9 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
     if (myword) {
       AsyncStorage.getItem("MYWORD", (err: unknown, result: any) => {
         let obj = JSON.parse(result);
-        obj.myWord.imi.splice(index, 1);
-        obj.myWord.hurigana.splice(index, 1);
-        obj.myWord.kanji.splice(index, 1);
-        obj.myWord.reibunImi.splice(index, 1);
-        obj.myWord.reibunFurigana.splice(index, 1);
-        obj.myWord.reibun.splice(index, 1);
+        for (let key in obj.myWord) {
+          obj.myWord[key].splice(index, 1);
+        }
         AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
         isUpdate ? dispatch(setUpdate(false)) : dispatch(setUpdate(true));
         setIndex((prev) => prev - 1);

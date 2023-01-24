@@ -22,6 +22,7 @@ const Wrapper = styled.View<ITheme>`
   background-color: ${(props: any) => props.theme.bgColor};
 `;
 const Header = styled.View<ITheme>`
+  flex: 1;
   width: 100%;
   height: 35%;
   padding: 10%;
@@ -36,6 +37,7 @@ const Text = styled.Text`
   font-size: 30px;
 `;
 const Contents = styled.View`
+  flex: 3;
   margin: 10px;
   shadow-offset: {
     width: 0;
@@ -47,13 +49,15 @@ const Contents = styled.View`
 `;
 
 const TileWrap = styled.TouchableOpacity`
+  flex: 1;
   width: 10%;
   flex-grow: 1;
 `;
 const Tile = styled.View<ITheme>`
   border-radius: 10px;
-  padding: 40px;
   margin: 10px;
+  padding: 40px;
+  justify-content: center;
   background-color: ${(props: any) => props.theme.cardColor};
   align-items: center;
 `;
@@ -102,7 +106,7 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
             <ChapterText>{itemData.item.title}</ChapterText>
             <ChapterSubText>
               {itemData.item.subtitle}
-              {itemData.item.subtitle !== "즐겨찾기" && "단어"}
+              {itemData.item.subtitle !== "단어장" && "단어"}
             </ChapterSubText>
           </Tiled>
         ) : (
@@ -110,7 +114,7 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
             <ChapterText>{itemData.item.title}</ChapterText>
             <ChapterSubText>
               {itemData.item.subtitle}
-              {itemData.item.subtitle !== "즐겨찾기" && "단어"}
+              {itemData.item.subtitle !== "단어장" && "단어"}
             </ChapterSubText>
           </Tile>
         )}

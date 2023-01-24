@@ -61,12 +61,12 @@ const Tiled = styled(Tile)`
   background-color: #aeadad;
 `;
 const ChapterText = styled.Text`
-  font-size: 35px;
+  font-size: 30px;
   font-weight: 500;
   margin-bottom: 5px;
 `;
 const ChapterSubText = styled.Text`
-  font-size: 22px;
+  font-size: 20px;
 `;
 
 const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
@@ -79,6 +79,7 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
       dispatch(setChapter(JSON.parse(result)));
     });
   }, []);
+
   const { isChapter } = useSelector((state: any) => state.Kanji);
   const renderGridItem = (itemData: IData) => {
     return (

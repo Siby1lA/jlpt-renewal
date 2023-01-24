@@ -8,7 +8,7 @@ export const setImi = (data: boolean) => ({
   data: data,
 });
 
-export const setReinun = (data: boolean) => ({
+export const setReibun = (data: boolean) => ({
   type: "SET_REIBUN",
   data: data,
 });

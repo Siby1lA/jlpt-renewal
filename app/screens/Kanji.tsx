@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setHiragana,
   setImi,
-  setReinun,
+  setReibun,
   setReset,
 } from "../redux/actions/TriggerAction";
 import { FontAwesome } from "@expo/vector-icons";
@@ -90,7 +90,7 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
         </Btn>
         <Btn
           onPress={() =>
-            isReibun ? dispatch(setReinun(false)) : dispatch(setReinun(true))
+            isReibun ? dispatch(setReibun(false)) : dispatch(setReibun(true))
           }
         >
           <FontAwesome name="language" size={30} color="#d4d4d4" />

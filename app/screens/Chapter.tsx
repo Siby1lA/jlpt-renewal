@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect } from "react";
-import { FlatList } from "react-native";
+import { Alert, FlatList } from "react-native";
 import { useSelector } from "react-redux";
 import styled from "styled-components/native";
 interface IData {
@@ -55,16 +55,42 @@ const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
   useEffect(() => {
     setOptions({ title: `JLPT ${title}` });
   }, []);
+
   const renderGridItem = (itemData: IData) => {
     return (
       <TileWrap
-        onPress={() =>
-          navigate("Kanji", {
-            id: itemData.item.id,
-            title: title,
-            page: itemData.item.page,
-          })
-        }
+        onPress={() => {
+          if (isChapter[0] === title && isChapter[1] === itemData.item.page) {
+            navigate("Kanji", {
+              id: itemData.item.id,
+              title: title,
+              page: itemData.item.page,
+            });
+          } else {
+            Alert.alert(
+              `${isChapter[0]} ${isChapter[1]}을 진행중입니다.`,
+              `진행했던 데이터를 포기하고 \n${title} ${itemData.item.page}으로 넘어가시겠습니까?`,
+              [
+                {
+                  text: "네",
+                  style: "cancel",
+                  onPress: () => {
+                    navigate("Kanji", {
+                      id: itemData.item.id,
+                      title: title,
+                      page: itemData.item.page,
+                    });
+                  },
+                },
+                {
+                  text: "아니오",
+                  style: "destructive",
+                  onPress: () => {},
+                },
+              ]
+            );
+          }
+        }}
       >
         {isChapter &&
         isChapter.lenth !== 0 &&

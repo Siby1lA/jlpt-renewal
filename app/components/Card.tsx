@@ -3,12 +3,12 @@ import { Alert, Animated, PanResponder, View } from "react-native";
 import styled from "styled-components/native";
 import { Feather } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { setHiragana, setImi, setReinun } from "../redux/actions/TriggerAction";
+import { setHiragana, setImi, setReibun } from "../redux/actions/TriggerAction";
 import AsyncStorage from "@react-native-community/async-storage";
 
 const Wrapper = styled(Animated.createAnimatedComponent(View))`
   background-color: ${(props) => props.theme.textColor};
-  width: 85%;
+  width: 86%;
   height: 97%;
   justify-content: space-between;
   align-items: center;
@@ -51,12 +51,13 @@ const KanjiWrap = styled.View`
   justify-content: center;
 `;
 const ReibunWrap = styled.View`
+  flex: 1;
   width: 100%;
   background-color: aliceblue;
-  flex: 1;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 10px 0px;
+  padding-bottom: 30px;
 `;
 const ReinunText = styled.Text`
   color: ${(props: any) => props.theme.bgColor};
@@ -194,12 +195,11 @@ const Card = ({ data: KanjiData, pop, viewed }: IKanji) => {
   const reset = () => {
     dispatch(setHiragana(false));
     dispatch(setImi(false));
-    dispatch(setReinun(false));
   };
   useEffect(() => {
     // 리셋 트리거
     reset();
-    setIndex(0);
+    setIndex(48);
   }, [isReset]);
 
   useEffect(() => {
@@ -238,23 +238,14 @@ const Card = ({ data: KanjiData, pop, viewed }: IKanji) => {
         onPress: () => {
           setIndex(0);
           reset();
+          count = 0;
           pop();
         },
       },
       {
         text: "아니오",
         style: "destructive",
-        // If the user confirmed, then we dispatch the action we blocked earlier
-        // This will continue the action that had triggered the removal of the screen
         onPress: () => {
-          // WhatLangIndex.forEach((value) => {
-          //   data.imi.push(KanjiData.imi[value]);
-          //   data.kanji.push(KanjiData.kanji[value]);
-          //   data.hurigana.push(KanjiData.hurigana[value]);
-          //   data.reibun.push(KanjiData.reibun[value]);
-          //   data.reibunImi.push(KanjiData.reibunImi[value]);
-          //   data.reibunFurigana.push(KanjiData.reibunFurigana[value]);
-          // });
           setIndex(0);
           reset();
         },
@@ -269,7 +260,7 @@ const Card = ({ data: KanjiData, pop, viewed }: IKanji) => {
             <FavoritesIcon>
               <Feather name="bookmark" size={38} color="#27272a" />
             </FavoritesIcon>
-            <FavoritesText>단어장 추가</FavoritesText>
+            <FavoritesText>단어장 추가2</FavoritesText>
           </FavoritesWrap>
           <KanjiWrap>
             <KanjiText>
@@ -278,8 +269,25 @@ const Card = ({ data: KanjiData, pop, viewed }: IKanji) => {
                 : KanjiData.kanji[index + 1]}
             </KanjiText>
           </KanjiWrap>
+          {isReibun && (
+            <ReibunWrap>
+              <ReibunBox>
+                {isHiragana && (
+                  <ReibunFurigana>
+                    {KanjiData.reibunFurigana[index + 1]}
+                  </ReibunFurigana>
+                )}
+                <ReinunText>{KanjiData.reibun[index + 1]}</ReinunText>
+                {isImi && (
+                  <ReibunImiText>
+                    {KanjiData.reibunImi[index + 1]}
+                  </ReibunImiText>
+                )}
+              </ReibunBox>
+            </ReibunWrap>
+          )}
           <CountText>
-            {index < 50 ? (
+            {index < 49 ? (
               index + state + state + "/" + KanjiData.imi.length
             ) : (
               <CountText>끝!!</CountText>
@@ -314,9 +322,15 @@ const Card = ({ data: KanjiData, pop, viewed }: IKanji) => {
         {isReibun && (
           <ReibunWrap>
             <ReibunBox>
-              <ReibunFurigana>{KanjiData.reibunFurigana[index]}</ReibunFurigana>
+              {isHiragana && (
+                <ReibunFurigana>
+                  {KanjiData.reibunFurigana[index]}
+                </ReibunFurigana>
+              )}
               <ReinunText>{KanjiData.reibun[index]}</ReinunText>
-              <ReibunImiText>{KanjiData.reibunImi[index]}</ReibunImiText>
+              {isImi && (
+                <ReibunImiText>{KanjiData.reibunImi[index]}</ReibunImiText>
+              )}
             </ReibunBox>
           </ReibunWrap>
         )}

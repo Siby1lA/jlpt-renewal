@@ -17,3 +17,8 @@ export const setReset = (data: boolean) => ({
   type: "SET_RESET",
   data: data,
 });
+
+export const setUpdate = (data: boolean) => ({
+  type: "SET_UPDATE",
+  data: data,
+});

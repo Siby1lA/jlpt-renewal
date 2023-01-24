@@ -1,8 +1,9 @@
 const init = {
   isHiragana: false,
   isImi: false,
-  isReibun: false,
+  isReibun: true,
   isReset: false,
+  isUpdate: false,
 };
 export default function (state = init, action: any) {
   switch (action.type) {
@@ -25,6 +26,11 @@ export default function (state = init, action: any) {
       return {
         ...state,
         isReset: action.data,
+      };
+    case "SET_UPDATE":
+      return {
+        ...state,
+        isUpdate: action.data,
       };
     default:
       return state;

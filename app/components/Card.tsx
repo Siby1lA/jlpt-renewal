@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Alert, Animated, PanResponder, View } from "react-native";
 import styled from "styled-components/native";
-import { Feather } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { setHiragana, setImi, setReibun } from "../redux/actions/TriggerAction";
+import { setHiragana, setImi, setUpdate } from "../redux/actions/TriggerAction";
 import AsyncStorage from "@react-native-community/async-storage";
 
 const Wrapper = styled(Animated.createAnimatedComponent(View))`
@@ -80,7 +80,7 @@ const ReibunBox = styled.View`
   margin: 0px 10px;
   align-items: center;
 `;
-const FavoritesWrap = styled.View`
+const FavoritesWrap = styled.TouchableOpacity`
   position: absolute;
   right: 30px;
   top: -4px;
@@ -105,13 +105,15 @@ interface IKanji {
   };
   pop: any;
   viewed: boolean;
+  myword: boolean;
 }
 let count: number = 0;
 
-const Card = ({ data: KanjiData, pop, viewed }: IKanji) => {
+const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
   const [index, setIndex] = useState<number>(0);
   const [state, setState] = useState<number>(0);
-  const { isHiragana, isImi, isReibun, isReset } = useSelector(
+  const [valid, setValid] = useState<boolean>(false);
+  const { isHiragana, isImi, isReibun, isReset, isUpdate } = useSelector(
     (state: any) => state.Trigger
   );
 
@@ -236,6 +238,7 @@ const Card = ({ data: KanjiData, pop, viewed }: IKanji) => {
       AsyncStorage.setItem("INDEX", JSON.stringify(count));
     };
   }, []);
+
   const result = async () => {
     Alert.alert("끝났습니다!", "뒤로가시겠습니까?", [
       {
@@ -258,16 +261,85 @@ const Card = ({ data: KanjiData, pop, viewed }: IKanji) => {
       },
     ]);
   };
+
+  const onFavorite = () => {
+    if (!myword) {
+      AsyncStorage.getItem("MYWORD", (err: unknown, result: any) => {
+        let obj = JSON.parse(result);
+        if (obj === null) {
+          let newObj: any = {
+            myWord: {
+              hurigana: [],
+              imi: [],
+              reibun: [],
+              kanji: [],
+              reibunImi: [],
+              reibunFurigana: [],
+            },
+          };
+          newObj.myWord.imi.push(KanjiData.imi[index]);
+          newObj.myWord.hurigana.push(KanjiData.hurigana[index]);
+          newObj.myWord.kanji.push(KanjiData.kanji[index]);
+          newObj.myWord.reibunImi.push(KanjiData.reibunImi[index]);
+          newObj.myWord.reibunFurigana.push(KanjiData.reibunFurigana[index]);
+          newObj.myWord.reibun.push(KanjiData.reibun[index]);
+          AsyncStorage.setItem("MYWORD", JSON.stringify(newObj));
+        } else {
+          obj.myWord.imi.push(KanjiData.imi[index]);
+          obj.myWord.hurigana.push(KanjiData.hurigana[index]);
+          obj.myWord.kanji.push(KanjiData.kanji[index]);
+          obj.myWord.reibunImi.push(KanjiData.reibunImi[index]);
+          obj.myWord.reibunFurigana.push(KanjiData.reibunFurigana[index]);
+          obj.myWord.reibun.push(KanjiData.reibun[index]);
+          AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
+        }
+      });
+      isUpdate ? dispatch(setUpdate(false)) : dispatch(setUpdate(true));
+    }
+    if (myword || myWorded(KanjiData.imi[index])) {
+      AsyncStorage.getItem("MYWORD", (err: unknown, result: any) => {
+        let obj = JSON.parse(result);
+        obj.myWord.imi.splice(index, 1);
+        obj.myWord.hurigana.splice(index, 1);
+        obj.myWord.kanji.splice(index, 1);
+        obj.myWord.reibunImi.splice(index, 1);
+        obj.myWord.reibunFurigana.splice(index, 1);
+        obj.myWord.reibun.splice(index, 1);
+        AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
+        isUpdate ? dispatch(setUpdate(false)) : dispatch(setUpdate(true));
+      });
+    }
+  };
+
+  const myWorded = (data: string) => {
+    AsyncStorage.getItem("MYWORD", (err: unknown, result: any) => {
+      setValid(result.includes(data));
+    });
+    return valid;
+  };
   return (
     <CardContainer>
       {index + state + state !== 0 ? (
         <Wrapper style={{ transform: [{ scale: secondScale }] }}>
-          <FavoritesWrap>
-            <FavoritesIcon>
-              <Feather name="bookmark" size={38} color="#27272a" />
-            </FavoritesIcon>
-            <FavoritesText>단어장 추가</FavoritesText>
-          </FavoritesWrap>
+          {myWorded(KanjiData.imi[index]) ? (
+            <FavoritesWrap onPress={() => onFavorite()}>
+              <FavoritesIcon>
+                <Ionicons name="bookmark" size={38} color="#27272a" />
+              </FavoritesIcon>
+              <FavoritesText>
+                {myword ? "단어장 삭제" : "단어장 삭제"}
+              </FavoritesText>
+            </FavoritesWrap>
+          ) : (
+            <FavoritesWrap onPress={() => onFavorite()}>
+              <FavoritesIcon>
+                <Ionicons name="bookmark-outline" size={38} color="#27272a" />
+              </FavoritesIcon>
+              <FavoritesText>
+                {myword ? "단어장 삭제" : "단어장 추가"}
+              </FavoritesText>
+            </FavoritesWrap>
+          )}
           <KanjiWrap>
             <KanjiText>
               {state === 0
@@ -293,7 +365,7 @@ const Card = ({ data: KanjiData, pop, viewed }: IKanji) => {
             </ReibunWrap>
           )}
           <CountText>
-            {index < 49 ? (
+            {index < KanjiData.imi.length - 1 ? (
               index + state + state + "/" + KanjiData.imi.length
             ) : (
               <CountText>끝!!</CountText>
@@ -312,12 +384,26 @@ const Card = ({ data: KanjiData, pop, viewed }: IKanji) => {
           ],
         }}
       >
-        <FavoritesWrap>
-          <FavoritesIcon>
-            <Feather name="bookmark" size={38} color="#27272a" />
-          </FavoritesIcon>
-          <FavoritesText>단어장 추가</FavoritesText>
-        </FavoritesWrap>
+        {myWorded(KanjiData.imi[index]) ? (
+          <FavoritesWrap onPress={() => onFavorite()}>
+            <FavoritesIcon>
+              <Ionicons name="bookmark" size={38} color="#27272a" />
+            </FavoritesIcon>
+            <FavoritesText>
+              {myword ? "단어장 삭제" : "단어장 삭제"}
+            </FavoritesText>
+          </FavoritesWrap>
+        ) : (
+          <FavoritesWrap onPress={() => onFavorite()}>
+            <FavoritesIcon>
+              <Ionicons name="bookmark-outline" size={38} color="#27272a" />
+            </FavoritesIcon>
+            <FavoritesText>
+              {myword ? "단어장 삭제" : "단어장 추가"}
+            </FavoritesText>
+          </FavoritesWrap>
+        )}
+
         <KanjiWrap>
           {isHiragana && (
             <HuriganaText>{KanjiData.hurigana[index]}</HuriganaText>
@@ -341,7 +427,7 @@ const Card = ({ data: KanjiData, pop, viewed }: IKanji) => {
           </ReibunWrap>
         )}
         <CountText>
-          {index < 50 ? (
+          {index < KanjiData.imi.length ? (
             index + 1 + "/" + KanjiData.imi.length
           ) : (
             <CountText>끝!!</CountText>

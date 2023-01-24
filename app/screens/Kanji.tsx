@@ -31,7 +31,6 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
     isChapter.lenth !== 0 &&
     isChapter[0] === title &&
     isChapter[1] === page;
-
   return (
     <Container>
       <Card data={Data[title][id]} pop={navigation.pop} viewed={viewed} />

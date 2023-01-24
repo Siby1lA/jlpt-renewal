@@ -56,18 +56,20 @@ const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
   useEffect(() => {
     setOptions({ title: `${title === "내 단어" ? "" : "JLPT"} ${title}` });
   }, []);
-
   const renderGridItem = (itemData: IData) => {
     return (
       <TileWrap
         onPress={() => {
-          if (isChapter[0] === title && isChapter[1] === itemData.item.page) {
+          if (
+            (isChapter[0] === title && isChapter[1] === itemData.item.page) ||
+            isChapter.length === 0
+          ) {
             navigate("Kanji", {
               id: itemData.item.id,
               title: title,
               page: itemData.item.page,
             });
-          } else {
+          } else if (isChapter[0] !== undefined) {
             Alert.alert(
               `${isChapter[0]} ${isChapter[1]}을 진행중입니다.`,
               `진행했던 데이터를 포기하고 \n${title} ${itemData.item.page}으로 넘어가시겠습니까?`,

@@ -122,7 +122,7 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
   const [index, setIndex] = useState<number>(0);
   const [state, setState] = useState<number>(0);
   const [valid, setValid] = useState<boolean>(false);
-  const [icon, setIcon] = useState<boolean>(false);
+  const [view, setView] = useState<boolean>(false);
   const { isHiragana, isImi, isReibun, isReset, isUpdate } = useSelector(
     (state: any) => state.Trigger
   );
@@ -188,6 +188,7 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
       },
       onPanResponderRelease: (_, { dx }) => {
         reset();
+        setView((prev) => !prev);
         if (dx < -100) {
           setState(0);
           goLeft.start(onDismissLeft);
@@ -362,6 +363,18 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
       Speech.speak(sounds, { language: "ja-JP" });
     }
   };
+  const viewImiValid = () => {
+    if (isImi || view) {
+      return true;
+    }
+    return false;
+  };
+  const viewHiraValid = () => {
+    if (isHiragana || view) {
+      return true;
+    }
+    return false;
+  };
   return (
     <CardContainer>
       {index < KanjiData.imi.length - 1 ? (
@@ -417,18 +430,7 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
                     />
                   </IconWrapReibun>
                   <ReibunBox>
-                    {isHiragana && (
-                      <ReibunFurigana>
-                        {KanjiData.reibunFurigana[index + 1]}
-                      </ReibunFurigana>
-                    )}
-
                     <ReinunText>{KanjiData.reibun[index + 1]}</ReinunText>
-                    {isImi && (
-                      <ReibunImiText>
-                        {KanjiData.reibunImi[index + 1]}
-                      </ReibunImiText>
-                    )}
                   </ReibunBox>
                 </ReibunWrap>
               )}
@@ -484,12 +486,14 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
                 color="gray"
               />
             </IconWrap>
-            {isHiragana && (
+            {viewHiraValid() && (
               <HuriganaText>{KanjiData.hurigana[index]}</HuriganaText>
             )}
 
             <KanjiText>{KanjiData.kanji[index]}</KanjiText>
-            {isImi && <KanjiImiText>{KanjiData.imi[index]}</KanjiImiText>}
+            {viewImiValid() && (
+              <KanjiImiText>{KanjiData.imi[index]}</KanjiImiText>
+            )}
           </KanjiWrap>
           {isReibun && (
             <ReibunWrap>
@@ -502,14 +506,14 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
                 />
               </IconWrapReibun>
               <ReibunBox>
-                {isHiragana && (
+                {viewHiraValid() && (
                   <ReibunFurigana>
                     {KanjiData.reibunFurigana[index]}
                   </ReibunFurigana>
                 )}
 
                 <ReinunText>{KanjiData.reibun[index]}</ReinunText>
-                {isImi && (
+                {viewImiValid() && (
                   <ReibunImiText>{KanjiData.reibunImi[index]}</ReibunImiText>
                 )}
               </ReibunBox>

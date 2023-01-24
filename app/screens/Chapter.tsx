@@ -1,8 +1,9 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import { Alert, FlatList } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/native";
+import { setChapter } from "../redux/actions/KanjiAction";
 interface IData {
   item: {
     id: string;
@@ -52,9 +53,12 @@ const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
 }) => {
   const { isChapter } = useSelector((state: any) => state.Kanji);
   const { title, chapter }: string | any = route.params;
-
+  const dispatch = useDispatch();
   useEffect(() => {
     setOptions({ title: `${title === "내 단어" ? "" : "JLPT"} ${title}` });
+    if (isChapter === null) {
+      dispatch(setChapter(["0", "0"]));
+    }
   }, []);
   const renderGridItem = (itemData: IData) => {
     return (

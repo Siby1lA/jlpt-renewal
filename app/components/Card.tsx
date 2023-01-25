@@ -117,7 +117,16 @@ interface IKanji {
 }
 
 let count: number = 0;
-
+let newObj: any = {
+  myWord: {
+    hurigana: [],
+    imi: [],
+    reibun: [],
+    kanji: [],
+    reibunImi: [],
+    reibunFurigana: [],
+  },
+};
 const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
   const [index, setIndex] = useState<number>(0);
   const [state, setState] = useState<number>(0);
@@ -225,6 +234,7 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
 
   useEffect(() => {
     // 인덱스 추적
+    setView(false);
     if (index > KanjiData.imi.length - 1) {
       setTimeout(() => {
         result();
@@ -287,20 +297,9 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
       AsyncStorage.getItem("MYWORD", (err: unknown, result: any) => {
         let obj = JSON.parse(result);
         if (obj === null) {
-          let newObj: any = {
-            myWord: {
-              hurigana: [],
-              imi: [],
-              reibun: [],
-              kanji: [],
-              reibunImi: [],
-              reibunFurigana: [],
-            },
-          };
-          for (let key in obj.newObj) {
+          for (let key in newObj) {
             newObj.myWord[key].push(KanjiData[key][index]);
           }
-
           AsyncStorage.setItem("MYWORD", JSON.stringify(newObj));
         } else {
           if (myWorded(KanjiData.imi[index])) {
@@ -441,7 +440,7 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
             transform: [
               { scale },
               { translateX: position },
-              { rotateZ: rotation },
+              // { rotateZ: rotation },
             ],
           }}
         >

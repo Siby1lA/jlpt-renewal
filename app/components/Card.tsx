@@ -117,16 +117,7 @@ interface IKanji {
 }
 
 let count: number = 0;
-let newObj: any = {
-  myWord: {
-    hurigana: [],
-    imi: [],
-    reibun: [],
-    kanji: [],
-    reibunImi: [],
-    reibunFurigana: [],
-  },
-};
+
 const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
   const [index, setIndex] = useState<number>(0);
   const [state, setState] = useState<number>(0);
@@ -187,9 +178,9 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
       onPanResponderMove: (_, { dx }) => {
         position.setValue(dx);
         if (dx < -100) {
-          setState(0);
-        } else if (dx > 100) {
           setState(1);
+        } else if (dx > 100) {
+          setState(0);
         }
       },
       onPanResponderGrant: () => {
@@ -199,10 +190,10 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
         reset();
         setView((prev) => !prev);
         if (dx < -100) {
-          setState(0);
+          setState(1);
           goLeft.start(onDismissLeft);
         } else if (dx > 100) {
-          setState(1);
+          setState(0);
           goRight.start(onDismissRight);
         } else {
           Animated.parallel([onPressOut, goCenter]).start();
@@ -210,13 +201,13 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
       },
     })
   ).current;
-  const onDismissRight = () => {
+  const onDismissLeft = () => {
     scale.setValue(1);
     setIndex((prev) => prev + 1);
     count++;
     position.setValue(0);
   };
-  const onDismissLeft = () => {
+  const onDismissRight = () => {
     scale.setValue(1);
     setIndex((prev) => prev - 1);
     count--;
@@ -297,7 +288,17 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
       AsyncStorage.getItem("MYWORD", (err: unknown, result: any) => {
         let obj = JSON.parse(result);
         if (obj === null) {
-          for (let key in newObj) {
+          let newObj: any = {
+            myWord: {
+              hurigana: [],
+              imi: [],
+              reibun: [],
+              kanji: [],
+              reibunImi: [],
+              reibunFurigana: [],
+            },
+          };
+          for (let key in newObj.myWord) {
             newObj.myWord[key].push(KanjiData[key][index]);
           }
           AsyncStorage.setItem("MYWORD", JSON.stringify(newObj));

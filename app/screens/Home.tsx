@@ -21,23 +21,9 @@ const Wrapper = styled.View<ITheme>`
   flex: 1;
   background-color: ${(props: any) => props.theme.bgColor};
 `;
-const Header = styled.View<ITheme>`
-  flex: 1;
-  width: 100%;
-  height: 35%;
-  padding: 10%;
-  padding-top: 20%;
-  border-bottom-left-radius: 50px;
-  border-bottom-right-radius: 50px;
-  background-color: ${(props: any) => props.theme.textColor};
-`;
-const Text = styled.Text`
-  color: ${(props: any) => props.theme.bgColor};
-  font-weight: 500;
-  font-size: 30px;
-`;
+
 const Contents = styled.View`
-  flex: 3;
+  flex: 1;
   margin: 10px;
   shadow-offset: {
     width: 0;
@@ -45,32 +31,43 @@ const Contents = styled.View`
   }
   shadow-opacity: 0.2;
   shadow-radius: 10px;
-  bottom: 50px;
 `;
 
 const TileWrap = styled.TouchableOpacity`
   flex: 1;
-  width: 10%;
   flex-grow: 1;
 `;
 const Tile = styled.View<ITheme>`
   border-radius: 10px;
-  margin: 10px;
-  padding: 40px;
-  justify-content: center;
+  margin: 15px;
+  padding: 20px;
   background-color: ${(props: any) => props.theme.cardColor};
   align-items: center;
+  border: 1px solid;
+  height: 170px;
 `;
 const Tiled = styled(Tile)`
-  background-color: gray;
+  background-color: #aaaaaa;
+`;
+const TextWrap = styled.View`
+  background-color: ${(props: any) => props.theme.cardColor};
+  border-radius: 12px;
+  padding: 7px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  border: 1px solid;
 `;
 const ChapterText = styled.Text`
+  color: ${(props: any) => props.theme.wordColor};
   font-size: 30px;
   font-weight: 500;
-  margin-bottom: 5px;
 `;
-const ChapterSubText = styled.Text`
-  font-size: 20px;
+
+const CharaImg = styled.Image`
+  position: absolute;
+  left: 35%;
+  bottom: 0;
+  width: 70px;
+  height: 120px;
 `;
 
 const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
@@ -103,19 +100,17 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
         isChapter.lenth !== 0 &&
         isChapter[0] === itemData.item.title ? (
           <Tiled>
-            <ChapterText>{itemData.item.title}</ChapterText>
-            <ChapterSubText>
-              {itemData.item.subtitle}
-              {itemData.item.subtitle !== "단어장" && "단어"}
-            </ChapterSubText>
+            <CharaImg source={require("../assets/image/chara.png")} />
+            <TextWrap>
+              <ChapterText>{itemData.item.title}</ChapterText>
+            </TextWrap>
           </Tiled>
         ) : (
           <Tile>
-            <ChapterText>{itemData.item.title}</ChapterText>
-            <ChapterSubText>
-              {itemData.item.subtitle}
-              {itemData.item.subtitle !== "단어장" && "단어"}
-            </ChapterSubText>
+            <CharaImg source={require("../assets/image/chara.png")} />
+            <TextWrap>
+              <ChapterText>{itemData.item.title}</ChapterText>
+            </TextWrap>
           </Tile>
         )}
       </TileWrap>
@@ -123,15 +118,11 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
   };
   return (
     <Wrapper>
-      <Header>
-        <Text>JLPT 단어</Text>
-      </Header>
-
       <Contents>
         <FlatList
-          keyExtractor={(item) => item.title + ""}
           data={CATEGORIES}
           renderItem={renderGridItem}
+          keyExtractor={(item) => item.title + ""}
           numColumns={2}
         />
       </Contents>

@@ -102,6 +102,13 @@ const IconWrapReibun = styled.View`
   right: 10px;
   bottom: 10px;
 `;
+const CharaImg = styled.Image`
+  position: absolute;
+  left: 10px;
+  top: -42px;
+  width: 70px;
+  height: 42px;
+`;
 interface IKanji {
   data: {
     hurigana: string;
@@ -409,6 +416,7 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
               </KanjiWrap>
               {isReibun && (
                 <ReibunWrap>
+                  <CharaImg source={require("../assets/image/chara2.png")} />
                   <IconWrapReibun>
                     <Ionicons
                       onPress={() => speak(KanjiData.reibunFurigana[index])}
@@ -485,6 +493,7 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
           </KanjiWrap>
           {isReibun && (
             <ReibunWrap>
+              <CharaImg source={require("../assets/image/chara2.png")} />
               <IconWrapReibun>
                 <Ionicons
                   onPress={() => speak(KanjiData.reibunFurigana[index])}

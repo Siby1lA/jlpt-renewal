@@ -26,27 +26,35 @@ const TileWrap = styled.TouchableOpacity`
 `;
 const Tile = styled.View`
   border-radius: 10px;
-  padding: 40px;
-  margin: 10px;
-  justify-content: center;
+  margin: 15px;
+  padding: 20px;
   background-color: ${(props: any) => props.theme.cardColor};
-
   align-items: center;
+  border: 1px solid;
+  height: 170px;
 `;
 const ChapterText = styled.Text`
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 5px;
+  color: ${(props: any) => props.theme.wordColor};
+  font-size: 30px;
+  font-weight: 500;
 `;
-const ChapterSubText = styled.Text`
-  font-size: 18px;
-  font-weight: 600;
+const TextWrap = styled.View`
+  background-color: ${(props: any) => props.theme.cardColor};
+  border-radius: 12px;
+  padding: 7px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  border: 1px solid;
 `;
-
 const Tiled = styled(Tile)`
-  background-color: gray;
+  background-color: #aaaaaa;
 `;
-
+const CharaImg = styled.Image`
+  position: absolute;
+  left: 35%;
+  bottom: 0;
+  width: 70px;
+  height: 120px;
+`;
 const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
   route,
   navigation: { navigate, setOptions },
@@ -104,13 +112,17 @@ const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
         isChapter[0] === title &&
         itemData.item.page === isChapter[1] ? (
           <Tiled>
-            <ChapterText>{title}</ChapterText>
-            <ChapterSubText>{itemData.item.page}</ChapterSubText>
+            <CharaImg source={require("../assets/image/chara.png")} />
+            <TextWrap>
+              <ChapterText>{itemData.item.page}</ChapterText>
+            </TextWrap>
           </Tiled>
         ) : (
           <Tile>
-            <ChapterText>{title}</ChapterText>
-            <ChapterSubText>{itemData.item.page}</ChapterSubText>
+            <CharaImg source={require("../assets/image/chara.png")} />
+            <TextWrap>
+              <ChapterText>{itemData.item.page}</ChapterText>
+            </TextWrap>
           </Tile>
         )}
       </TileWrap>

@@ -21,7 +21,7 @@ const Root = () => (
   >
     <Nav.Screen
       options={{
-        headerShown: false,
+        headerTitle: "일단냥",
       }}
       name="Home"
       component={Home}

@@ -5,7 +5,7 @@ const Wrapper = styled.View`
   flex: 1;
   background-color: ${(props: any) => props.theme.bgColor};
 `;
-const Box = styled.View`
+const Box = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: space-between;
   padding: 15px;
@@ -31,14 +31,14 @@ const NameText = styled.Text`
 `;
 const CharaImg = styled.Image`
   position: absolute;
-  left: 10;
+  left: 10px;
   width: 80px;
   height: 55px;
 `;
 const CharaImgRight = styled.Image`
   transform: scaleX(-1);
   position: absolute;
-  right: 10;
+  right: 10px;
   width: 80px;
   height: 55px;
 `;
@@ -54,7 +54,14 @@ const Setting: React.FC<NativeStackScreenProps<any, "Setting">> = ({
         <CharaImgRight source={require("../assets/image/chara2.png")} />
       </NameBox>
 
-      <Box>
+      <Box
+        onPress={() =>
+          navigation.navigate("Web", {
+            title: "공지사항",
+            uri: "https://clear-index-f4b.notion.site/b34c929bcaa34f9989d245e0470f7be4",
+          })
+        }
+      >
         <Text>공지사항</Text>
         <Text>🏆</Text>
       </Box>
@@ -62,7 +69,14 @@ const Setting: React.FC<NativeStackScreenProps<any, "Setting">> = ({
         <Text>리뷰 작성</Text>
         <Text>💖</Text>
       </Box>
-      <Box>
+      <Box
+        onPress={() =>
+          navigation.navigate("Web", {
+            title: "자주 묻는 질문",
+            uri: "https://clear-index-f4b.notion.site/81675bb648254447ab7618323bfe7275",
+          })
+        }
+      >
         <Text>자주 묻는 질문</Text>
         <Text>⛩️</Text>
       </Box>
@@ -74,8 +88,15 @@ const Setting: React.FC<NativeStackScreenProps<any, "Setting">> = ({
         <Text>앱 버전</Text>
         <TextV>v1.0.0 ⚙️</TextV>
       </Box>
-      <Box>
-        <Text>개발자 깃허브</Text>
+      <Box
+        onPress={() =>
+          navigation.navigate("Web", {
+            title: "개발자",
+            uri: "https://github.com/Siby1lA",
+          })
+        }
+      >
+        <Text>개발자</Text>
         <TextV>🧑🏻‍💻</TextV>
       </Box>
     </Wrapper>

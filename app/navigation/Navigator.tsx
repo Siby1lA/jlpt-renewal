@@ -6,6 +6,7 @@ import Kanji from "../screens/Kanji";
 import Colors from "../constants/Colors";
 import MyWord from "../screens/MyWord";
 import Setting from "../screens/Setting";
+import Web from "../screens/Web";
 
 const Nav = createNativeStackNavigator();
 const Root = () => (
@@ -36,6 +37,7 @@ const Root = () => (
       name="Setting"
       component={Setting}
     />
+    <Nav.Screen name="Web" component={Web} />
   </Nav.Navigator>
 );
 

@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FlatList } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/native";
@@ -21,7 +21,23 @@ const Wrapper = styled.View<ITheme>`
   flex: 1;
   background-color: ${(props: any) => props.theme.bgColor};
 `;
-
+const Header = styled.View`
+  border-radius: 10px;
+  margin: 0px 20px;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: ${(props: any) => props.theme.cardColor};
+  align-items: center;
+  border: 1px solid;
+  height: 170px;
+  overflow: hidden;
+  shadow-offset: {
+    width: 0;
+    height: 1;
+  }
+  shadow-opacity: 0.2;
+  shadow-radius: 10px;
+`;
 const Contents = styled.View`
   flex: 1;
   margin: 10px;
@@ -39,27 +55,19 @@ const TileWrap = styled.TouchableOpacity`
 `;
 const Tile = styled.View<ITheme>`
   border-radius: 10px;
-  margin: 15px;
+  margin: 10px;
   padding: 20px;
   background-color: ${(props: any) => props.theme.cardColor};
   align-items: center;
   border: 1px solid;
   height: 170px;
 `;
-const Tiled = styled(Tile)`
-  background-color: #aaaaaa;
-`;
-const TextWrap = styled.View`
-  background-color: ${(props: any) => props.theme.cardColor};
-  border-radius: 12px;
-  padding: 7px;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-  border: 1px solid;
-`;
+
 const ChapterText = styled.Text`
-  color: ${(props: any) => props.theme.wordColor};
-  font-size: 30px;
-  font-weight: 500;
+  margin-top: 11%;
+  color: ${(props: any) => props.theme.textColor};
+  font-size: 28px;
+  font-family: "K-Gothic";
 `;
 
 const CharaImg = styled.Image`
@@ -69,24 +77,56 @@ const CharaImg = styled.Image`
   width: 70px;
   height: 120px;
 `;
+const NikuImg = styled.Image`
+  position: absolute;
+  top: 1%;
+  left: 24%;
+  width: 110px;
+  height: 80px;
+`;
+const TaberuImg = styled.Image`
+  position: absolute;
+  bottom: -11%;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  z-index: -1;
+`;
+const MeigenText = styled.Text`
+  font-family: "K-Gothic";
+  font-size: 18px;
+`;
+
+const AutherText = styled(MeigenText)`
+  position: absolute;
+  bottom: 15%;
+  left: 5%;
+`;
 
 const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
   navigation: { navigate },
 }) => {
+  const [meigen, setMeigen] = useState<string>("");
+  const [auther, setAuther] = useState<string>("");
   const dispatch = useDispatch();
   useEffect(() => {
     //redux-persit + asyncstorage 변경 예정
     AsyncStorage.getItem("VIEWED", (err: unknown, result: any) => {
       dispatch(setChapter(JSON.parse(result)));
     });
+    fetch("https://meigen.doodlenote.net/api/json.php")
+      .then((res) => res.json())
+      .then((res) => {
+        setMeigen(res[0].meigen);
+        setAuther(res[0].auther);
+      });
   }, []);
-
   const { isChapter } = useSelector((state: any) => state.Kanji);
   const renderGridItem = (itemData: IData) => {
     return (
       <TileWrap
         onPress={() => {
-          if (itemData.item.title !== "내 단어") {
+          if (itemData.item.title !== "単語") {
             navigate("Chapter", {
               title: itemData.item.title,
               chapter: itemData.item.chapter,
@@ -99,18 +139,16 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
         {isChapter &&
         isChapter.lenth !== 0 &&
         isChapter[0] === itemData.item.title ? (
-          <Tiled>
+          <Tile>
             <CharaImg source={require("../assets/image/chara.png")} />
-            <TextWrap>
-              <ChapterText>{itemData.item.title}</ChapterText>
-            </TextWrap>
-          </Tiled>
+            <NikuImg source={require("../assets/image/niku2.png")} />
+            <ChapterText>{itemData.item.title}</ChapterText>
+          </Tile>
         ) : (
           <Tile>
             <CharaImg source={require("../assets/image/chara.png")} />
-            <TextWrap>
-              <ChapterText>{itemData.item.title}</ChapterText>
-            </TextWrap>
+            <NikuImg source={require("../assets/image/niku.png")} />
+            <ChapterText>{itemData.item.title}</ChapterText>
           </Tile>
         )}
       </TileWrap>
@@ -118,6 +156,14 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
   };
   return (
     <Wrapper>
+      <Header>
+        <MeigenText>
+          {meigen.slice(0, 60)}
+          {meigen.length > 60 && "..."}
+        </MeigenText>
+        <AutherText>-{auther}-</AutherText>
+        <TaberuImg source={require("../assets/image/taberu.png")} />
+      </Header>
       <Contents>
         <FlatList
           data={CATEGORIES}

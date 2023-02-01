@@ -1,11 +1,9 @@
 {
   "expo": {
-    "name": "jlpt",
+    "name": "일단냥",
     "slug": "jlpt",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "assetBundlePatterns": ["**/*"]
   },
   "name": "jlpt"
 }

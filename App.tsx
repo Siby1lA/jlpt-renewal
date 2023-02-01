@@ -5,7 +5,7 @@ import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import { ThemeProvider } from "styled-components/native";
-import { darkTheme, lightTheme } from "./styled";
+import { lightTheme } from "./styled";
 import Navigator from "./app/navigation/Navigator";
 import { Provider } from "react-redux";
 import rootReducer from "./app/redux/reducer";
@@ -19,7 +19,9 @@ export default function App() {
     async function prepare() {
       try {
         // Pre-load fonts, make any API calls you need to do here
-        await Font.loadAsync(Entypo.font);
+        await Font.loadAsync({
+          "K-Gothic": require("./ios/Fonts/K-Gothic.ttf"),
+        });
         // Artificially delay for two seconds to simulate a slow loading
         // experience. Please remove this if you copy and paste the code!
         await new Promise((resolve: any) => setTimeout(resolve, 2000));
@@ -57,7 +59,7 @@ export default function App() {
   }
 
   return (
-    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+    <ThemeProvider theme={lightTheme}>
       <Provider store={store}>
         <NavigationContainer>
           <Navigator />

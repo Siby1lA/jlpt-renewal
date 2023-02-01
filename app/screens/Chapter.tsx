@@ -35,26 +35,26 @@ const Tile = styled.View`
 `;
 const ChapterText = styled.Text`
   color: ${(props: any) => props.theme.wordColor};
-  font-size: 30px;
-  font-weight: 500;
+  font-size: 28px;
+  /* margin-top: 11%; */
+  margin-top: 13px;
+  font-family: "K-Gothic";
 `;
-const TextWrap = styled.View`
-  background-color: ${(props: any) => props.theme.cardColor};
-  border-radius: 12px;
-  padding: 7px;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-  border: 1px solid;
-`;
-const Tiled = styled(Tile)`
-  background-color: #aaaaaa;
-`;
+
 const CharaImg = styled.Image`
   position: absolute;
-  left: 35%;
+  /* left: 35%; */
   bottom: 0;
   width: 70px;
   height: 120px;
 `;
+const NikuImg = styled.Image`
+  position: absolute;
+  /* left: 24%; */
+  width: 110px;
+  height: 80px;
+`;
+
 const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
   route,
   navigation: { navigate, setOptions },
@@ -63,7 +63,7 @@ const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
   const { title, chapter }: string | any = route.params;
   const dispatch = useDispatch();
   useEffect(() => {
-    setOptions({ title: `${title === "내 단어" ? "" : "JLPT"} ${title}` });
+    setOptions({ title: `${title === "単語" ? "" : "JLPT"} ${title}` });
     if (isChapter === null) {
       dispatch(setChapter(["0", "0"]));
     }
@@ -111,18 +111,16 @@ const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
         isChapter.lenth !== 0 &&
         isChapter[0] === title &&
         itemData.item.page === isChapter[1] ? (
-          <Tiled>
+          <Tile>
             <CharaImg source={require("../assets/image/chara.png")} />
-            <TextWrap>
-              <ChapterText>{itemData.item.page}</ChapterText>
-            </TextWrap>
-          </Tiled>
+            <NikuImg source={require("../assets/image/niku2.png")} />
+            <ChapterText>{itemData.item.page}</ChapterText>
+          </Tile>
         ) : (
           <Tile>
             <CharaImg source={require("../assets/image/chara.png")} />
-            <TextWrap>
-              <ChapterText>{itemData.item.page}</ChapterText>
-            </TextWrap>
+            <NikuImg source={require("../assets/image/niku.png")} />
+            <ChapterText>{itemData.item.page}</ChapterText>
           </Tile>
         )}
       </TileWrap>

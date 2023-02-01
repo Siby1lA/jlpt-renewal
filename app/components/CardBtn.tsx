@@ -25,14 +25,13 @@ const Btn = styled.TouchableOpacity`
 const NaviText = styled.Text`
   font-size: 14px;
   margin-top: 5px;
-  color: ${(props: any) => props.theme.textColor};
+  color: #27272a;
 `;
 const CardBtn = () => {
   const { isHiragana, isImi, isReibun, isReset } = useSelector(
     (state: any) => state.Trigger
   );
   const dispatch = useDispatch();
-  const isDark = useColorScheme() === "dark";
   return (
     <Navi>
       <Btn
@@ -45,7 +44,7 @@ const CardBtn = () => {
         <MaterialCommunityIcons
           name="syllabary-hiragana"
           size={30}
-          color={isDark ? "#d4d4d4" : "#27272a"}
+          color={"#27272a"}
         />
         <NaviText>히라가나</NaviText>
       </Btn>
@@ -57,7 +56,7 @@ const CardBtn = () => {
         <MaterialCommunityIcons
           name="lightbulb-on-outline"
           size={30}
-          color={isDark ? "#d4d4d4" : "#27272a"}
+          color={"#27272a"}
         />
         <NaviText>의미</NaviText>
       </Btn>
@@ -66,11 +65,7 @@ const CardBtn = () => {
           isReibun ? dispatch(setReibun(false)) : dispatch(setReibun(true))
         }
       >
-        <FontAwesome
-          name="language"
-          size={30}
-          color={isDark ? "#d4d4d4" : "#27272a"}
-        />
+        <FontAwesome name="language" size={30} color={"#27272a"} />
         <NaviText>예문</NaviText>
       </Btn>
       <Btn
@@ -78,11 +73,7 @@ const CardBtn = () => {
           isReset ? dispatch(setReset(false)) : dispatch(setReset(true))
         }
       >
-        <AntDesign
-          name="retweet"
-          size={30}
-          color={isDark ? "#d4d4d4" : "#27272a"}
-        />
+        <AntDesign name="retweet" size={30} color={"#27272a"} />
         <NaviText>리셋</NaviText>
       </Btn>
     </Navi>

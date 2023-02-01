@@ -44,7 +44,7 @@ const MyWord: React.FC<NativeStackScreenProps<any, "MyWord">> = ({
   const [kanjiData, setKanjiData] = useState({});
   const { isUpdate } = useSelector((state: any) => state.Trigger);
   useEffect(() => {
-    navigation.setOptions({ title: "내 단어" });
+    navigation.setOptions({ title: "단어장" });
     AsyncStorage.getItem("MYWORD", (err: unknown, result: any) => {
       if (result) {
         setKanjiData(JSON.parse(result));

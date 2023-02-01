@@ -31,8 +31,8 @@ const CardContainer = styled.View`
 `;
 
 const KanjiText = styled.Text`
+  font-family: "K-Gothic";
   font-size: 60px;
-  font-weight: 500;
   margin: 5px 0px;
   color: ${(props: any) => props.theme.wordColor};
 `;
@@ -42,10 +42,12 @@ const KanjiImiText = styled.Text`
   color: ${(props: any) => props.theme.wordColor};
 `;
 const HuriganaText = styled.Text`
+  font-family: "K-Gothic";
   font-size: 20px;
   color: ${(props: any) => props.theme.wordColor};
 `;
 const CountText = styled.Text`
+  font-family: "K-Gothic";
   position: absolute;
   bottom: 5px;
   font-size: 14px;
@@ -66,14 +68,19 @@ const ReibunWrap = styled.View`
   padding-bottom: 30px;
 `;
 const ReinunText = styled.Text`
+  font-family: "K-Gothic";
   color: ${(props: any) => props.theme.wordColor};
   font-size: 20px;
 `;
 const ReibunFurigana = styled(ReinunText)`
+  font-family: "K-Gothic";
   color: #f48fb1;
   font-size: 14px;
+  margin-bottom: 5px;
 `;
-const ReibunImiText = styled(ReinunText)`
+const ReibunImiText = styled.Text`
+  color: ${(props: any) => props.theme.wordColor};
+  font-size: 20px;
   margin-top: 7px;
 `;
 const ReibunBox = styled.View`

@@ -456,7 +456,7 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
             transform: [
               { scale },
               { translateX: position },
-              // { rotateZ: rotation },
+              { rotateZ: rotation },
             ],
           }}
         >

@@ -123,7 +123,12 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
       ),
       headerLeft: () => (
         <Ionicons
-          onPress={() => Alert.alert("準備してるにゃん")}
+          onPress={() =>
+            navigation.navigate("Web", {
+              title: "이벤트",
+              uri: "https://clear-index-f4b.notion.site/75e54a1703d2415ab4431861a1c60471",
+            })
+          }
           name="ios-cart"
           size={26}
           color="#ecf0f1"

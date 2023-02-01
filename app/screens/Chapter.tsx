@@ -4,6 +4,7 @@ import { Alert, FlatList } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/native";
 import { setChapter } from "../redux/actions/KanjiAction";
+import { Ionicons } from "@expo/vector-icons";
 interface IData {
   item: {
     id: string;
@@ -57,13 +58,24 @@ const NikuImg = styled.Image`
 
 const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
   route,
-  navigation: { navigate, setOptions },
+  navigation,
 }) => {
   const { isChapter } = useSelector((state: any) => state.Kanji);
   const { title, chapter }: string | any = route.params;
   const dispatch = useDispatch();
   useEffect(() => {
-    setOptions({ title: `${title === "単語" ? "" : "JLPT"} ${title}` });
+    navigation.setOptions({
+      title: `${title === "単語" ? "" : "JLPT"} ${title}`,
+      headerRight: () => (
+        <Ionicons
+          onPress={() => navigation.navigate("Setting")}
+          name="settings-sharp"
+          size={26}
+          color="#ecf0f1"
+        />
+      ),
+    });
+
     if (isChapter === null) {
       dispatch(setChapter(["0", "0"]));
     }
@@ -76,7 +88,7 @@ const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
             (isChapter[0] === title && isChapter[1] === itemData.item.page) ||
             isChapter[0] === "0"
           ) {
-            navigate("Kanji", {
+            navigation.navigate("Kanji", {
               id: itemData.item.id,
               title: title,
               page: itemData.item.page,
@@ -90,7 +102,7 @@ const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
                   text: "네",
                   style: "cancel",
                   onPress: () => {
-                    navigate("Kanji", {
+                    navigation.navigate("Kanji", {
                       id: itemData.item.id,
                       title: title,
                       page: itemData.item.page,

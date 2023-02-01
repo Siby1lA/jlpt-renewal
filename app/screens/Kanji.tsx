@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setChapter } from "../redux/actions/KanjiAction";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CardBtn from "../components/CardBtn";
+import { Ionicons } from "@expo/vector-icons";
 
 const Container = styled.View`
   flex: 1;
@@ -21,7 +22,17 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
   const dispatch = useDispatch();
   const { isChapter } = useSelector((state: any) => state.Kanji);
   useEffect(() => {
-    navigation.setOptions({ title: `${title} ${page}` });
+    navigation.setOptions({
+      title: `${title} ${page}`,
+      headerRight: () => (
+        <Ionicons
+          onPress={() => navigation.navigate("Setting")}
+          name="settings-sharp"
+          size={26}
+          color="#ecf0f1"
+        />
+      ),
+    });
     //redux-persit + asyncstorage 변경 예정
     dispatch(setChapter([title, page]));
     AsyncStorage.setItem("VIEWED", JSON.stringify([title, page]));

@@ -1,11 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { FlatList } from "react-native";
+import { Alert, FlatList } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/native";
 import { CATEGORIES } from "../data/list-data";
 import { setChapter } from "../redux/actions/KanjiAction";
+import { Ionicons } from "@expo/vector-icons";
 interface ITheme {
   textColor?: string;
   bgColor?: string;
@@ -104,11 +105,33 @@ const AutherText = styled(MeigenText)`
 `;
 
 const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
-  navigation: { navigate },
+  navigation,
 }) => {
   const [meigen, setMeigen] = useState<string>("");
   const [auther, setAuther] = useState<string>("");
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Ionicons
+          onPress={() => navigation.navigate("Setting")}
+          name="settings-sharp"
+          size={26}
+          color="#ecf0f1"
+        />
+      ),
+      headerLeft: () => (
+        <Ionicons
+          onPress={() => Alert.alert("準備してるにゃん")}
+          name="ios-cart"
+          size={26}
+          color="#ecf0f1"
+        />
+      ),
+    });
+  }, []);
+
   useEffect(() => {
     //redux-persit + asyncstorage 변경 예정
     AsyncStorage.getItem("VIEWED", (err: unknown, result: any) => {
@@ -127,12 +150,12 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
       <TileWrap
         onPress={() => {
           if (itemData.item.title !== "単語") {
-            navigate("Chapter", {
+            navigation.navigate("Chapter", {
               title: itemData.item.title,
               chapter: itemData.item.chapter,
             });
           } else {
-            navigate("MyWord");
+            navigation.navigate("MyWord");
           }
         }}
       >

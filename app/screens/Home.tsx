@@ -7,6 +7,11 @@ import styled from "styled-components/native";
 import { CATEGORIES } from "../data/list-data";
 import { setChapter } from "../redux/actions/KanjiAction";
 import { Ionicons } from "@expo/vector-icons";
+import {
+  BannerAd,
+  BannerAdSize,
+  TestIds,
+} from "react-native-google-mobile-ads";
 interface ITheme {
   textColor?: string;
   bgColor?: string;
@@ -103,7 +108,6 @@ const AutherText = styled(MeigenText)`
   bottom: 15%;
   left: 5%;
 `;
-
 const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
   navigation,
 }) => {
@@ -200,6 +204,7 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
           numColumns={2}
         />
       </Contents>
+      <BannerAd unitId={TestIds.BANNER} size={BannerAdSize.FULL_BANNER} />
     </Wrapper>
   );
 };

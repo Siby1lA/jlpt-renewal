@@ -5,6 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/native";
 import { setChapter } from "../redux/actions/KanjiAction";
 import { Ionicons } from "@expo/vector-icons";
+import {
+  BannerAd,
+  BannerAdSize,
+  TestIds,
+} from "react-native-google-mobile-ads";
+
 interface IData {
   item: {
     id: string;
@@ -14,7 +20,10 @@ interface IData {
 const Wrapper = styled.View`
   flex: 1;
   background-color: ${(props: any) => props.theme.bgColor};
-  padding: 10px;
+`;
+const Contents = styled.View`
+  flex: 1;
+  margin: 10px;
 `;
 const TileWrap = styled.TouchableOpacity`
   flex-grow: 1;
@@ -27,7 +36,7 @@ const TileWrap = styled.TouchableOpacity`
 `;
 const Tile = styled.View`
   border-radius: 10px;
-  margin: 15px;
+  margin: 10px;
   padding: 20px;
   background-color: ${(props: any) => props.theme.cardColor};
   align-items: center;
@@ -44,14 +53,12 @@ const ChapterText = styled.Text`
 
 const CharaImg = styled.Image`
   position: absolute;
-  /* left: 35%; */
   bottom: 0;
   width: 70px;
   height: 120px;
 `;
 const NikuImg = styled.Image`
   position: absolute;
-  /* left: 24%; */
   width: 110px;
   height: 80px;
 `;
@@ -140,12 +147,16 @@ const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
   };
   return (
     <Wrapper>
-      <FlatList
-        keyExtractor={(item) => item.id + ""}
-        data={chapter}
-        renderItem={renderGridItem}
-        numColumns={2}
-      />
+      <Contents>
+        <FlatList
+          keyExtractor={(item) => item.id + ""}
+          data={chapter}
+          renderItem={renderGridItem}
+          numColumns={2}
+        />
+      </Contents>
+
+      <BannerAd unitId={TestIds.BANNER} size={BannerAdSize.FULL_BANNER} />
     </Wrapper>
   );
 };

@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import rootReducer from "./app/redux/reducer";
 import { legacy_createStore as createStore } from "redux";
 import styled from "styled-components/native";
+import { MobileAds } from "react-native-google-mobile-ads";
 
 const Box = styled.View`
   flex: 1;
@@ -29,7 +30,11 @@ export default function App() {
         await Font.loadAsync({
           "K-Gothic": require("./ios/Fonts/K-Gothic.ttf"),
         });
-
+        MobileAds()
+          .initialize()
+          .then((adapterStatuses) => {
+            // Initialization complete!
+          });
         await new Promise((resolve: any) => setTimeout(resolve, 2000));
       } catch (e) {
         console.warn(e);

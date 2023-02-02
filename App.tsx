@@ -10,6 +10,7 @@ import rootReducer from "./app/redux/reducer";
 import { legacy_createStore as createStore } from "redux";
 import styled from "styled-components/native";
 import { MobileAds } from "react-native-google-mobile-ads";
+// import { MobileAds } from "react-native-google-mobile-ads";
 
 const Box = styled.View`
   flex: 1;

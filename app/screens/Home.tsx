@@ -1,12 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
-import { Alert, FlatList } from "react-native";
+import { FlatList } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/native";
 import { CATEGORIES } from "../data/list-data";
 import { setChapter } from "../redux/actions/KanjiAction";
 import { Ionicons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import {
   BannerAd,
   BannerAdSize,
@@ -126,14 +127,14 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
         />
       ),
       headerLeft: () => (
-        <Ionicons
+        <MaterialIcons
           onPress={() =>
             navigation.navigate("Web", {
               title: "이벤트",
               uri: "https://clear-index-f4b.notion.site/75e54a1703d2415ab4431861a1c60471",
             })
           }
-          name="ios-cart"
+          name="event-available"
           size={26}
           color="#ecf0f1"
         />

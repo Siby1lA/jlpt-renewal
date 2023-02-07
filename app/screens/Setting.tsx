@@ -73,10 +73,17 @@ const Setting: React.FC<NativeStackScreenProps<any, "Setting">> = ({
         <Text>자주 묻는 질문</Text>
         <Text>⛩️</Text>
       </Box>
-      {/* <Box>
+      <Box
+        onPress={() =>
+          navigation.navigate("Web", {
+            title: "문의하기",
+            uri: "https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=twilight9508@gmail.com",
+          })
+        }
+      >
         <Text>문의하기</Text>
         <Text>🧾</Text>
-      </Box> */}
+      </Box>
       <Box>
         <Text>앱 버전</Text>
         <TextV>v1.0.0 ⚙️</TextV>
@@ -94,8 +101,8 @@ const Setting: React.FC<NativeStackScreenProps<any, "Setting">> = ({
       </Box>
       <NameBox>
         <CharaImg source={require("../assets/image/chara2.png")} />
-        <NameText>일본단어냥이</NameText>
-        <NameText>Siby1lA</NameText>
+        <NameText>일본어 단어 공부하는 냥이</NameText>
+        <NameText>@twilight</NameText>
         <CharaImgRight source={require("../assets/image/chara2.png")} />
       </NameBox>
     </Wrapper>

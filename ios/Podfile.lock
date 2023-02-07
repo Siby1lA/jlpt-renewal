@@ -295,7 +295,7 @@ PODS:
     - RCTTypeSafety
     - React-Core
     - ReactCommon/turbomodule/core
-  - react-native-webview (11.26.1):
+  - react-native-webview (11.23.1):
     - React-Core
   - React-perflogger (0.70.5)
   - React-RCTActionSheet (0.70.5):
@@ -568,7 +568,7 @@ SPEC CHECKSUMS:
   React-jsinspector: badd81696361249893a80477983e697aab3c1a34
   React-logger: fdda34dd285bdb0232e059b19d9606fa0ec3bb9c
   react-native-safe-area-context: ec0d85aca8110dae9327430a9541fec165352dab
-  react-native-webview: e3b659a6d614bb37fb12a2de82c91a378c59d84b
+  react-native-webview: a192040320142d8f10d652a745c46e4f43e37f8c
   React-perflogger: e68d3795cf5d247a0379735cbac7309adf2fb931
   React-RCTActionSheet: 05452c3b281edb27850253db13ecd4c5a65bc247
   React-RCTAnimation: 578eebac706428e68466118e84aeacf3a282b4da

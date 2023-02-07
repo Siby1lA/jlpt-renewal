@@ -8,11 +8,7 @@ import { CATEGORIES } from "../data/list-data";
 import { setChapter } from "../redux/actions/KanjiAction";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import {
-  BannerAd,
-  BannerAdSize,
-  TestIds,
-} from "react-native-google-mobile-ads";
+// import { BannerAd, BannerAdSize } from "react-native-google-mobile-ads";
 interface ITheme {
   textColor?: string;
   bgColor?: string;
@@ -44,6 +40,7 @@ const Header = styled.View`
   }
   shadow-opacity: 0.2;
   shadow-radius: 10px;
+  elevation: 5;
 `;
 const Contents = styled.View`
   flex: 1;
@@ -54,6 +51,7 @@ const Contents = styled.View`
   }
   shadow-opacity: 0.2;
   shadow-radius: 10px;
+  elevation: 5;
 `;
 
 const TileWrap = styled.TouchableOpacity`
@@ -205,7 +203,10 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
           numColumns={2}
         />
       </Contents>
-      <BannerAd unitId={TestIds.BANNER} size={BannerAdSize.FULL_BANNER} />
+      {/* <BannerAd
+        unitId={TestIds.BANNER}
+        size={BannerAdSize.FULL_BANNER}
+      /> */}
     </Wrapper>
   );
 };

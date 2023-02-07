@@ -1,25 +1,31 @@
 import { useEffect, useRef, useState } from "react";
-import { Alert, Animated, PanResponder, View } from "react-native";
+import { Alert, Animated, PanResponder, Platform, View } from "react-native";
 import styled from "styled-components/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { setHiragana, setImi, setUpdate } from "../redux/actions/TriggerAction";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Speech from "expo-speech";
-import {
-  AdEventType,
-  InterstitialAd,
-  TestIds,
-} from "react-native-google-mobile-ads";
+// import {
+//   AdEventType,
+//   InterstitialAd,
+//   TestIds,
+// } from "react-native-google-mobile-ads";
 
-const Wrapper = styled(Animated.createAnimatedComponent(View))`
+const Wrapper = styled(Animated.createAnimatedComponent(View))<{
+  valid: boolean;
+}>`
   background-color: ${(props) => props.theme.cardColor};
   width: 86%;
   height: 97%;
   justify-content: space-between;
   align-items: center;
   border-radius: 12px;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: ${(props) =>
+    props.valid
+      ? "1px 1px 5px rgba(0, 0, 0, 1)"
+      : "1px 1px 5px rgba(0, 0, 0, 0.2)"};
+  elevation: 5;
   position: absolute;
   flex: 1;
   overflow: hidden;
@@ -34,6 +40,7 @@ const CardContainer = styled.View`
   }
   shadow-opacity: 0.2;
   shadow-radius: 10px;
+  elevation: 5;
 `;
 
 const KanjiText = styled.Text`
@@ -137,10 +144,10 @@ interface IKanji {
 }
 
 let count: number = 0;
-const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
-  requestNonPersonalizedAdsOnly: true,
-  keywords: ["japan", "word"],
-});
+// const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
+//   requestNonPersonalizedAdsOnly: true,
+//   keywords: ["japan", "word"],
+// });
 
 const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
   const [index, setIndex] = useState<number>(0);
@@ -200,9 +207,9 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: (_, { dx }) => {
         position.setValue(dx);
-        if (dx < -100) {
+        if (dx < -40) {
           setState(1);
-        } else if (dx > 100) {
+        } else if (dx > 40) {
           setState(0);
         }
       },
@@ -212,10 +219,10 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
       onPanResponderRelease: (_, { dx }) => {
         reset();
         setView((prev) => !prev);
-        if (dx < -100) {
+        if (dx < -40) {
           setState(1);
           goLeft.start(onDismissLeft);
-        } else if (dx > 100) {
+        } else if (dx > 40) {
           setState(0);
           goRight.start(onDismissRight);
         } else {
@@ -240,15 +247,15 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
     dispatch(setHiragana(false));
     dispatch(setImi(false));
   };
-  useEffect(() => {
-    // 전면 광고 로딩
-    const unsubscribe = interstitial.addAdEventListener(
-      AdEventType.LOADED,
-      () => {}
-    );
-    interstitial.load();
-    return unsubscribe;
-  }, []);
+  // useEffect(() => {
+  //   // 전면 광고 로딩
+  //   const unsubscribe = interstitial.addAdEventListener(
+  //     AdEventType.LOADED,
+  //     () => {}
+  //   );
+  //   interstitial.load();
+  //   return unsubscribe;
+  // }, []);
   useEffect(() => {
     // 리셋 트리거
     reset();
@@ -295,7 +302,7 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
           text: "네",
           style: "cancel",
           onPress: () => {
-            interstitial.show();
+            // interstitial.show();
             setIndex(0);
             reset();
             count = 0;
@@ -306,7 +313,7 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
           text: "아니오",
           style: "destructive",
           onPress: () => {
-            interstitial.show();
+            // interstitial.show();
             setIndex(0);
             reset();
           },
@@ -402,7 +409,10 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
       {index < KanjiData.imi.length - 1 ? (
         <>
           {index + state + state !== 0 ? (
-            <Wrapper style={{ transform: [{ scale: secondScale }] }}>
+            <Wrapper
+              valid={Platform.OS === "ios" ? false : true}
+              style={{ transform: [{ scale: secondScale }] }}
+            >
               {myWorded(KanjiData.imi[index]) ? (
                 <FavoritesWrap onPress={() => onFavorite()}>
                   <FavoritesIcon>
@@ -471,6 +481,7 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
 
       {index < KanjiData.imi.length ? (
         <Wrapper
+          valid={Platform.OS === "ios" ? false : true}
           {...panResponder.panHandlers}
           style={{
             transform: [

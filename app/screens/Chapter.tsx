@@ -5,11 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/native";
 import { setChapter } from "../redux/actions/KanjiAction";
 import { Ionicons } from "@expo/vector-icons";
-import {
-  BannerAd,
-  BannerAdSize,
-  TestIds,
-} from "react-native-google-mobile-ads";
+// import {
+//   BannerAd,
+//   BannerAdSize,
+//   TestIds,
+// } from "react-native-google-mobile-ads";
 
 interface IData {
   item: {
@@ -156,7 +156,7 @@ const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
         />
       </Contents>
 
-      <BannerAd unitId={TestIds.BANNER} size={BannerAdSize.FULL_BANNER} />
+      {/* <BannerAd unitId={TestIds.BANNER} size={BannerAdSize.FULL_BANNER} /> */}
     </Wrapper>
   );
 };

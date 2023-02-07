@@ -18,6 +18,7 @@ const Root = () => (
       headerBackTitleVisible: false,
       headerTintColor: Colors.white,
       headerShadowVisible: false,
+      headerTitleAlign: "center",
     }}
   >
     <Nav.Screen

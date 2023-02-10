@@ -6,11 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { setHiragana, setImi, setUpdate } from "../redux/actions/TriggerAction";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Speech from "expo-speech";
-// import {
-//   AdEventType,
-//   InterstitialAd,
-//   TestIds,
-// } from "react-native-google-mobile-ads";
+import {
+  AdEventType,
+  InterstitialAd,
+  TestIds,
+} from "react-native-google-mobile-ads";
 
 const Wrapper = styled(Animated.createAnimatedComponent(View))<{
   valid: boolean;
@@ -144,19 +144,22 @@ interface IKanji {
 }
 
 let count: number = 0;
-// const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
-//   requestNonPersonalizedAdsOnly: true,
-//   keywords: ["japan", "word"],
-// });
+const unitId =
+  Platform.OS === "ios"
+    ? "ca-app-pub-8661339697648826/5434811422" //ios unitId
+    : "ca-app-pub-8661339697648826/3160753878"; // android unitId
+const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
+  requestNonPersonalizedAdsOnly: true,
+  keywords: ["japan", "word"],
+});
 
 const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
   const [index, setIndex] = useState<number>(0);
   const [state, setState] = useState<number>(0);
   const [valid, setValid] = useState<boolean>(false);
   const [view, setView] = useState<boolean>(false);
-  const { isHiragana, isImi, isReibun, isReset, isUpdate } = useSelector(
-    (state: any) => state.Trigger
-  );
+  const { isHiragana, isImi, isReibun, isReset, isUpdate, isMovePage } =
+    useSelector((state: any) => state.Trigger);
   const dispatch = useDispatch();
   const scale = useRef(new Animated.Value(1)).current;
   const position = useRef(new Animated.Value(0)).current;
@@ -247,20 +250,26 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
     dispatch(setHiragana(false));
     dispatch(setImi(false));
   };
-  // useEffect(() => {
-  //   // 전면 광고 로딩
-  //   const unsubscribe = interstitial.addAdEventListener(
-  //     AdEventType.LOADED,
-  //     () => {}
-  //   );
-  //   interstitial.load();
-  //   return unsubscribe;
-  // }, []);
+  useEffect(() => {
+    // 전면 광고 로딩
+    const unsubscribe = interstitial.addAdEventListener(
+      AdEventType.LOADED,
+      () => {}
+    );
+    interstitial.load();
+    return unsubscribe;
+  }, []);
   useEffect(() => {
     // 리셋 트리거
     reset();
     setIndex(0);
   }, [isReset]);
+
+  // 페이지 이동
+  useEffect(() => {
+    setIndex(isMovePage);
+    count = isMovePage;
+  }, [isMovePage]);
 
   useEffect(() => {
     // 인덱스 추적
@@ -302,7 +311,7 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
           text: "네",
           style: "cancel",
           onPress: () => {
-            // interstitial.show();
+            interstitial.show();
             setIndex(0);
             reset();
             count = 0;
@@ -313,7 +322,7 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
           text: "아니오",
           style: "destructive",
           onPress: () => {
-            // interstitial.show();
+            interstitial.show();
             setIndex(0);
             reset();
           },

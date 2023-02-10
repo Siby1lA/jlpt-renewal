@@ -22,3 +22,8 @@ export const setUpdate = (data: boolean) => ({
   type: "SET_UPDATE",
   data: data,
 });
+
+export const setMovePage = (data: number) => ({
+  type: "SET_MOVE_PAGE",
+  data: data,
+});

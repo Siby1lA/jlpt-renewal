@@ -4,6 +4,7 @@ const init = {
   isReibun: true,
   isReset: false,
   isUpdate: false,
+  isMovePage: 0,
 };
 export default function (state = init, action: any) {
   switch (action.type) {
@@ -31,6 +32,11 @@ export default function (state = init, action: any) {
       return {
         ...state,
         isUpdate: action.data,
+      };
+    case "SET_MOVE_PAGE":
+      return {
+        ...state,
+        isMovePage: action.data,
       };
     default:
       return state;

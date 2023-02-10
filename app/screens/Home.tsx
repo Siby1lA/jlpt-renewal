@@ -8,7 +8,7 @@ import { CATEGORIES } from "../data/list-data";
 import { setChapter } from "../redux/actions/KanjiAction";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-// import { BannerAd, BannerAdSize } from "react-native-google-mobile-ads";
+import AddBanner from "../components/AddBanner";
 interface ITheme {
   textColor?: string;
   bgColor?: string;
@@ -203,10 +203,7 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
           numColumns={2}
         />
       </Contents>
-      {/* <BannerAd
-        unitId={TestIds.BANNER}
-        size={BannerAdSize.FULL_BANNER}
-      /> */}
+      <AddBanner />
     </Wrapper>
   );
 };

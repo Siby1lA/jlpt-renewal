@@ -84,9 +84,20 @@ const Setting: React.FC<NativeStackScreenProps<any, "Setting">> = ({
         <Text>문의하기</Text>
         <Text>🧾</Text>
       </Box>
+      <Box
+        onPress={() =>
+          navigation.navigate("Web", {
+            title: "개발 스토리",
+            uri: "https://clear-index-f4b.notion.site/0996bacc945e4ad6b338d1077dabc1a9",
+          })
+        }
+      >
+        <Text>개발 스토리</Text>
+        <Text>📱</Text>
+      </Box>
       <Box>
         <Text>앱 버전</Text>
-        <TextV>v1.0.0 ⚙️</TextV>
+        <TextV>v1.0.1 ⚙️</TextV>
       </Box>
       <Box
         onPress={() =>

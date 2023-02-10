@@ -90,10 +90,12 @@ const TextInputBox = styled.View`
   border-bottom-width: 1px;
   border-color: gray;
   margin-bottom: 10px;
+  width: 80%;
 `;
 const Input = styled.TextInput`
   font-family: "K-Gothic";
   font-size: 18px;
+  text-align: center;
 `;
 const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
   route,
@@ -170,6 +172,17 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
               showsHorizontalScrollIndicator={false}
               data={Data[title][id].kanji}
               renderItem={renderGridItem}
+              onScrollToIndexFailed={(info) => {
+                const wait = new Promise((resolve: any) =>
+                  setTimeout(resolve, 500)
+                );
+                wait.then(() => {
+                  flatRef.current?.scrollToIndex({
+                    index: info.index,
+                    animated: true,
+                  });
+                });
+              }}
             />
             <TextInputBox>
               <Input
@@ -178,7 +191,7 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
                 maxLength={2}
                 onChangeText={onChangeNumber}
                 value={number}
-                placeholder="이동할 페이지 번호를 입력해 주세요"
+                placeholder="페이지 번호를 입력해주세요"
               />
             </TextInputBox>
             <BtnWrap>

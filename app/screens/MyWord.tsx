@@ -5,6 +5,7 @@ import CardBtn from "../components/CardBtn";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Card from "../components/Card";
 import { useSelector } from "react-redux";
+import { Ionicons } from "@expo/vector-icons";
 const Container = styled.View`
   flex: 1;
   background-color: ${(props: any) => props.theme.bgColor};
@@ -44,10 +45,21 @@ const MyWord: React.FC<NativeStackScreenProps<any, "MyWord">> = ({
   const [kanjiData, setKanjiData] = useState({});
   const { isUpdate } = useSelector((state: any) => state.Trigger);
   useEffect(() => {
-    navigation.setOptions({ title: "단어장" });
+    navigation.setOptions({
+      title: "단어장",
+      headerRight: () => (
+        <Ionicons
+          onPress={() => navigation.navigate("Setting")}
+          name="settings-sharp"
+          size={24}
+          color="#ecf0f1"
+        />
+      ),
+    });
     AsyncStorage.getItem("MYWORD", (err: unknown, result: any) => {
       if (result) {
-        setKanjiData(JSON.parse(result));
+        const data = JSON.parse(result);
+        setKanjiData(data);
       }
     });
   }, [isUpdate]);

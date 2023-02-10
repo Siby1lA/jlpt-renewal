@@ -8,8 +8,7 @@ import { setChapter } from "../redux/actions/KanjiAction";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CardBtn from "../components/CardBtn";
 import { Ionicons } from "@expo/vector-icons";
-import CustomMenu from "../components/CustomMenu";
-import { Alert, FlatList, Modal, Text, TextInput, View } from "react-native";
+import { Alert, FlatList, Modal, Pressable } from "react-native";
 import { setMovePage } from "../redux/actions/TriggerAction";
 const Container = styled.View`
   flex: 1;
@@ -17,20 +16,17 @@ const Container = styled.View`
 `;
 const ModalWrap = styled.View`
   flex: 1;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: -1;
-`;
-const Box = styled.View`
   position: absolute;
   top: 25%;
   left: 10%;
   width: 80%;
+`;
+const Box = styled.View`
   border: 1px solid;
   background-color: ${(props: any) => props.theme.cardColor};
   border-radius: 12px;
   justify-content: center;
   align-items: center;
-  z-index: 30;
 `;
 const BtnWrap = styled.View`
   flex-direction: row;
@@ -81,7 +77,8 @@ const TileRed = styled(Tile)`
   border: 1px solid #fc5c65;
 `;
 const FirstText = styled.Text`
-  font-size: 16px;
+  font-weight: bold;
+  font-size: 15px;
 `;
 const SecondText = styled(FirstText)`
   color: tomato;
@@ -90,7 +87,7 @@ const TextInputBox = styled.View`
   border-bottom-width: 1px;
   border-color: gray;
   margin-bottom: 10px;
-  width: 80%;
+  width: 10%;
 `;
 const Input = styled.TextInput`
   font-family: "K-Gothic";
@@ -116,7 +113,7 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
             setShowMenu(true);
           }}
           name="ios-search"
-          size={26}
+          size={24}
           color="#ecf0f1"
         />
       ),
@@ -125,6 +122,13 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
     dispatch(setChapter([title, page]));
     AsyncStorage.setItem("VIEWED", JSON.stringify([title, page]));
   }, []);
+
+  useEffect(() => {
+    onChangeNumber("");
+    setTimeout(() => {
+      onChangeNumber("25");
+    }, 500);
+  }, [showMenu]);
   const viewed =
     isChapter &&
     isChapter.lenth !== 0 &&
@@ -162,7 +166,19 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
         myword={false}
       />
       <CardBtn />
-      <Modal animationType={"fade"} transparent={true} visible={showMenu}>
+      <Modal
+        onRequestClose={() => setShowMenu(false)}
+        animationType={"fade"}
+        transparent={true}
+        visible={showMenu}
+      >
+        <Pressable
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0, 0, 0, 0.3)",
+          }}
+          onPress={() => setShowMenu(false)}
+        />
         <ModalWrap>
           <Box>
             <FlatList
@@ -191,7 +207,6 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
                 maxLength={2}
                 onChangeText={onChangeNumber}
                 value={number}
-                placeholder="페이지 번호를 입력해주세요"
               />
             </TextInputBox>
             <BtnWrap>

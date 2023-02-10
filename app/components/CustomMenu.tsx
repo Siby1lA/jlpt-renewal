@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 const CustomMenu = () => {
   return (
     <View>
-      <Text>검색asdasd</Text>
+      <Text>검색</Text>
     </View>
   );
 };

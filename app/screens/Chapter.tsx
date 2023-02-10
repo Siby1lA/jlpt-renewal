@@ -23,12 +23,6 @@ const Contents = styled.View`
 `;
 const TileWrap = styled.TouchableOpacity`
   flex-grow: 1;
-  shadow-offset: {
-    width: 0;
-    height: 1;
-  }
-  shadow-opacity: 0.2;
-  shadow-radius: 5px;
 `;
 const Tile = styled.View`
   border-radius: 10px;
@@ -37,13 +31,12 @@ const Tile = styled.View`
   background-color: ${(props: any) => props.theme.cardColor};
   align-items: center;
   border: 1px solid;
-  height: 170px;
+  height: 155px;
 `;
 const ChapterText = styled.Text`
   color: ${(props: any) => props.theme.wordColor};
   font-size: 28px;
-  /* margin-top: 11%; */
-  margin-top: 13px;
+  margin-top: 2%;
   font-family: "K-Gothic";
 `;
 
@@ -54,6 +47,7 @@ const CharaImg = styled.Image`
   height: 120px;
 `;
 const NikuImg = styled.Image`
+  top: -9%;
   position: absolute;
   width: 110px;
   height: 80px;
@@ -73,7 +67,7 @@ const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
         <Ionicons
           onPress={() => navigation.navigate("Setting")}
           name="settings-sharp"
-          size={26}
+          size={24}
           color="#ecf0f1"
         />
       ),
@@ -151,7 +145,7 @@ const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
           numColumns={2}
         />
       </Contents>
-      <AddBanner />
+      {/* <AddBanner /> */}
     </Wrapper>
   );
 };

@@ -34,24 +34,10 @@ const Header = styled.View`
   border: 1px solid;
   height: 170px;
   overflow: hidden;
-  shadow-offset: {
-    width: 0;
-    height: 1;
-  }
-  shadow-opacity: 0.2;
-  shadow-radius: 10px;
-  elevation: 5;
 `;
 const Contents = styled.View`
   flex: 1;
   margin: 10px;
-  shadow-offset: {
-    width: 0;
-    height: 1;
-  }
-  shadow-opacity: 0.2;
-  shadow-radius: 10px;
-  elevation: 5;
 `;
 
 const TileWrap = styled.TouchableOpacity`
@@ -65,11 +51,11 @@ const Tile = styled.View<ITheme>`
   background-color: ${(props: any) => props.theme.cardColor};
   align-items: center;
   border: 1px solid;
-  height: 170px;
+  height: 155px;
 `;
 
 const ChapterText = styled.Text`
-  margin-top: 11%;
+  margin-top: 2%;
   color: ${(props: any) => props.theme.textColor};
   font-size: 28px;
   font-family: "K-Gothic";
@@ -77,14 +63,13 @@ const ChapterText = styled.Text`
 
 const CharaImg = styled.Image`
   position: absolute;
-  left: 35%;
   bottom: 0;
   width: 70px;
   height: 120px;
 `;
 const NikuImg = styled.Image`
   position: absolute;
-  top: 1%;
+  top: -9%;
   left: 24%;
   width: 110px;
   height: 80px;
@@ -106,11 +91,12 @@ const AutherText = styled(MeigenText)`
   position: absolute;
   bottom: 15%;
   left: 5%;
+  z-index: 0;
 `;
 const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
   navigation,
 }) => {
-  const [meigen, setMeigen] = useState<string>("");
+  const [meigen, setMeigen] = useState<string>("Loading...");
   const [auther, setAuther] = useState<string>("");
   const dispatch = useDispatch();
 
@@ -120,7 +106,7 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
         <Ionicons
           onPress={() => navigation.navigate("Setting")}
           name="settings-sharp"
-          size={26}
+          size={24}
           color="#ecf0f1"
         />
       ),
@@ -133,7 +119,7 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
             })
           }
           name="event-available"
-          size={26}
+          size={24}
           color="#ecf0f1"
         />
       ),
@@ -203,7 +189,7 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
           numColumns={2}
         />
       </Contents>
-      <AddBanner />
+      {/* <AddBanner /> */}
     </Wrapper>
   );
 };

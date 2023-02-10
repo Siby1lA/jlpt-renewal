@@ -1,4 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Platform } from "react-native";
 import styled from "styled-components/native";
 
 const Wrapper = styled.View`
@@ -45,6 +46,10 @@ const CharaImgRight = styled.Image`
 const Setting: React.FC<NativeStackScreenProps<any, "Setting">> = ({
   navigation,
 }) => {
+  const reviewLink =
+    Platform.OS === "ios"
+      ? "itms-apps://itunes.apple.com/gb/app/id1669536727?action=write-review&mt=8"
+      : "https://play.google.com/store/apps/details?id=com.jlpt";
   return (
     <Wrapper>
       <Box
@@ -58,10 +63,17 @@ const Setting: React.FC<NativeStackScreenProps<any, "Setting">> = ({
         <Text>공지사항</Text>
         <Text>🏆</Text>
       </Box>
-      {/* <Box>
+      <Box
+        onPress={() =>
+          navigation.navigate("Web", {
+            title: "리뷰 작성",
+            uri: reviewLink,
+          })
+        }
+      >
         <Text>리뷰 작성</Text>
         <Text>💖</Text>
-      </Box> */}
+      </Box>
       <Box
         onPress={() =>
           navigation.navigate("Web", {
@@ -97,7 +109,7 @@ const Setting: React.FC<NativeStackScreenProps<any, "Setting">> = ({
       </Box>
       <Box>
         <Text>앱 버전</Text>
-        <TextV>v1.0.1 ⚙️</TextV>
+        <TextV>v1.1.0 ⚙️</TextV>
       </Box>
       <Box
         onPress={() =>

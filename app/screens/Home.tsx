@@ -96,8 +96,10 @@ const AutherText = styled(MeigenText)`
 const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
   navigation,
 }) => {
-  const [meigen, setMeigen] = useState<string>("Loading...");
-  const [auther, setAuther] = useState<string>("");
+  const [meigen, setMeigen] = useState<string>(
+    "空を舞い、時を廻り、黄昏に染まろうとも"
+  );
+  const [auther, setAuther] = useState<string>("ゼルダ姫");
   const dispatch = useDispatch();
 
   useEffect(() => {

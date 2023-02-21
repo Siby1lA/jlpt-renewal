@@ -348,25 +348,25 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
               reibunFurigana: [],
             },
           };
-          for (let key in newObj.myWord) {
+          Object.keys(newObj.myWord).forEach((key) => {
             newObj.myWord[key].push(KanjiData[key][index]);
-          }
+          });
           AsyncStorage.setItem("MYWORD", JSON.stringify(newObj));
         } else {
           if (myWorded(KanjiData.imi[index])) {
             AsyncStorage.getItem("MYWORD", (err: unknown, result: any) => {
               let obj = JSON.parse(result);
               let curIdx = obj.myWord.imi.indexOf(KanjiData.imi[index]);
-              for (let key in obj.myWord) {
+              Object.keys(obj.myWord).forEach((key) => {
                 obj.myWord[key].splice(curIdx, 1);
-              }
+              });
               AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
               isUpdate ? dispatch(setUpdate(false)) : dispatch(setUpdate(true));
             });
           } else {
-            for (let key in obj.myWord) {
+            Object.keys(obj.myWord).forEach((key) => {
               obj.myWord[key].push(KanjiData[key][index]);
-            }
+            });
             AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
           }
         }
@@ -376,9 +376,9 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
     if (myword) {
       AsyncStorage.getItem("MYWORD", (err: unknown, result: any) => {
         let obj = JSON.parse(result);
-        for (let key in obj.myWord) {
+        Object.keys(obj.myWord).forEach((key) => {
           obj.myWord[key].splice(index, 1);
-        }
+        });
         AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
         isUpdate ? dispatch(setUpdate(false)) : dispatch(setUpdate(true));
         setIndex((prev) => prev - 1);
@@ -422,29 +422,12 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
               valid={Platform.OS === "ios" ? false : true}
               style={{ transform: [{ scale: secondScale }] }}
             >
-              {myWorded(KanjiData.imi[index]) ? (
-                <FavoritesWrap onPress={() => onFavorite()}>
-                  <FavoritesIcon>
-                    <Ionicons name="bookmark" size={38} color="#27272a" />
-                  </FavoritesIcon>
-                  <FavoritesText>
-                    {myword ? "단어장 삭제" : "단어장 삭제"}
-                  </FavoritesText>
-                </FavoritesWrap>
-              ) : (
-                <FavoritesWrap onPress={() => onFavorite()}>
-                  <FavoritesIcon>
-                    <Ionicons
-                      name="bookmark-outline"
-                      size={38}
-                      color="#27272a"
-                    />
-                  </FavoritesIcon>
-                  <FavoritesText>
-                    {myword ? "단어장 삭제" : "단어장 추가"}
-                  </FavoritesText>
-                </FavoritesWrap>
-              )}
+              <FavoritesWrap onPress={() => onFavorite()}>
+                <FavoritesIcon>
+                  <Ionicons name="bookmark-outline" size={38} color="#27272a" />
+                </FavoritesIcon>
+                <FavoritesText>단어장 추가</FavoritesText>
+              </FavoritesWrap>
               <KanjiWrap>
                 <IconWrap>
                   <Ionicons

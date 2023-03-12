@@ -1,10 +1,11 @@
+import { ParamListBase } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Platform } from "react-native";
 import styled from "styled-components/native";
 
 const Wrapper = styled.View`
   flex: 1;
-  background-color: ${(props: any) => props.theme.bgColor};
+  background-color: ${(props) => props.theme.bgColor};
 `;
 const Box = styled.TouchableOpacity`
   flex-direction: row;
@@ -14,7 +15,7 @@ const Box = styled.TouchableOpacity`
   border-bottom-width: 0.5px;
 `;
 const Text = styled.Text`
-  color: ${(props: any) => props.theme.textColor};
+  color: ${(props) => props.theme.textColor};
   font-size: 20px;
 `;
 const TextV = styled(Text)`
@@ -27,7 +28,7 @@ const NameBox = styled.View`
   padding: 10px;
 `;
 const NameText = styled.Text`
-  color: ${(props: any) => props.theme.textColor};
+  color: ${(props) => props.theme.textColor};
   font-size: 16px;
 `;
 const CharaImg = styled.Image`
@@ -43,7 +44,7 @@ const CharaImgRight = styled.Image`
   width: 80px;
   height: 55px;
 `;
-const Setting: React.FC<NativeStackScreenProps<any, "Setting">> = ({
+const Setting: React.FC<NativeStackScreenProps<ParamListBase, "Setting">> = ({
   navigation,
 }) => {
   const reviewLink =

@@ -6,9 +6,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Card from "../components/Card";
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
+import { ParamListBase } from "@react-navigation/native";
+import { RootState } from "../redux/reducer";
 const Container = styled.View`
   flex: 1;
-  background-color: ${(props: any) => props.theme.bgColor};
+  background-color: ${(props) => props.theme.bgColor};
 `;
 const CardContainer = styled.View`
   flex: 1;
@@ -36,14 +38,24 @@ const Wrapper = styled.View`
 const NotWord = styled.Text`
   font-size: 22px;
   font-weight: 600;
-  color: ${(props: any) => props.theme.wordColor};
+  color: ${(props) => props.theme.wordColor};
 `;
+interface IType {
+  myWord: {
+    hurigana: string[];
+    imi: string[];
+    reibun: string[];
+    kanji: string[];
+    reibunImi: string[];
+    reibunFurigana: string[];
+  };
+}
 
-const MyWord: React.FC<NativeStackScreenProps<any, "MyWord">> = ({
+const MyWord: React.FC<NativeStackScreenProps<ParamListBase, "MyWord">> = ({
   navigation,
 }) => {
-  const [kanjiData, setKanjiData] = useState({});
-  const { isUpdate } = useSelector((state: any) => state.Trigger);
+  const [kanjiData, setKanjiData] = useState<IType>();
+  const { isUpdate } = useSelector((state: RootState) => state.Trigger);
   useEffect(() => {
     navigation.setOptions({
       title: "단어장",
@@ -56,16 +68,19 @@ const MyWord: React.FC<NativeStackScreenProps<any, "MyWord">> = ({
         />
       ),
     });
-    AsyncStorage.getItem("MYWORD", (err: unknown, result: any) => {
-      if (result) {
-        const data = JSON.parse(result);
-        setKanjiData(data);
+    AsyncStorage.getItem(
+      "MYWORD",
+      (err: unknown, result: string | null | undefined) => {
+        if (result) {
+          const data = JSON.parse(result);
+          setKanjiData(data);
+        }
       }
-    });
+    );
   }, [isUpdate]);
   return (
     <Container>
-      {kanjiData.myWord !== undefined && kanjiData.myWord.imi.length !== 0 ? (
+      {kanjiData !== undefined && kanjiData.myWord.imi.length !== 0 ? (
         <Card
           data={kanjiData.myWord}
           pop={navigation.pop}

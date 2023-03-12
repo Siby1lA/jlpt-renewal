@@ -10,6 +10,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { useColorScheme } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/reducer";
 const Navi = styled.View`
   flex-direction: row;
   justify-content: space-around;
@@ -29,7 +30,7 @@ const NaviText = styled.Text`
 `;
 const CardBtn = () => {
   const { isHiragana, isImi, isReibun, isReset } = useSelector(
-    (state: any) => state.Trigger
+    (state: RootState) => state.Trigger
   );
   const dispatch = useDispatch();
   return (

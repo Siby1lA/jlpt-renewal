@@ -6,6 +6,8 @@ import styled from "styled-components/native";
 import { setChapter } from "../redux/actions/KanjiAction";
 import { Ionicons } from "@expo/vector-icons";
 import AddBanner from "../components/AddBanner";
+import { RootState } from "../redux/reducer";
+import { ParamListBase } from "@react-navigation/native";
 
 interface IData {
   item: {
@@ -13,9 +15,14 @@ interface IData {
     page: string;
   };
 }
+type ChapterScreenParams = {
+  id?: string;
+  title: string;
+  chapter: { id: string; page: string }[];
+};
 const Wrapper = styled.View`
   flex: 1;
-  background-color: ${(props: any) => props.theme.bgColor};
+  background-color: ${(props) => props.theme.bgColor};
 `;
 const Contents = styled.View`
   flex: 1;
@@ -28,13 +35,13 @@ const Tile = styled.View`
   border-radius: 10px;
   margin: 10px;
   padding: 20px;
-  background-color: ${(props: any) => props.theme.cardColor};
+  background-color: ${(props) => props.theme.cardColor};
   align-items: center;
   border: 1px solid;
   height: 155px;
 `;
 const ChapterText = styled.Text`
-  color: ${(props: any) => props.theme.wordColor};
+  color: ${(props) => props.theme.wordColor};
   font-size: 28px;
   margin-top: 2%;
   font-family: "K-Gothic";
@@ -53,12 +60,12 @@ const NikuImg = styled.Image`
   height: 80px;
 `;
 
-const Chapter: React.FC<NativeStackScreenProps<any, "Chapter">> = ({
+const Chapter: React.FC<NativeStackScreenProps<ParamListBase, "Chapter">> = ({
   route,
   navigation,
 }) => {
-  const { isChapter } = useSelector((state: any) => state.Kanji);
-  const { title, chapter }: string | any = route.params;
+  const { isChapter } = useSelector((state: RootState) => state.Kanji);
+  const { title, chapter } = route.params as ChapterScreenParams;
   const dispatch = useDispatch();
   useEffect(() => {
     navigation.setOptions({

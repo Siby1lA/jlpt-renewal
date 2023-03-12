@@ -10,9 +10,11 @@ import CardBtn from "../components/CardBtn";
 import { Ionicons } from "@expo/vector-icons";
 import { Alert, FlatList, Modal, Pressable } from "react-native";
 import { setMovePage } from "../redux/actions/TriggerAction";
+import { ParamListBase } from "@react-navigation/native";
+import { RootState } from "../redux/reducer";
 const Container = styled.View`
   flex: 1;
-  background-color: ${(props: any) => props.theme.bgColor};
+  background-color: ${(props) => props.theme.bgColor};
 `;
 const ModalWrap = styled.View`
   flex: 1;
@@ -23,7 +25,7 @@ const ModalWrap = styled.View`
 `;
 const Box = styled.View`
   border: 1px solid;
-  background-color: ${(props: any) => props.theme.cardColor};
+  background-color: ${(props) => props.theme.cardColor};
   border-radius: 12px;
   justify-content: center;
   align-items: center;
@@ -64,7 +66,7 @@ const Tile = styled.TouchableOpacity`
   border-radius: 10px;
   margin: 10px;
   padding: 20px;
-  background-color: ${(props: any) => props.theme.cardColor};
+  background-color: ${(props) => props.theme.cardColor};
   align-items: center;
   border: 1px solid;
 `;
@@ -72,7 +74,7 @@ const TileRed = styled(Tile)`
   border-radius: 10px;
   margin: 10px;
   padding: 20px;
-  background-color: ${(props: any) => props.theme.cardColor};
+  background-color: ${(props) => props.theme.cardColor};
   align-items: center;
   border: 1px solid #fc5c65;
 `;
@@ -94,13 +96,19 @@ const Input = styled.TextInput`
   font-size: 18px;
   text-align: center;
 `;
-const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
+type KanjiScreenParams = {
+  id: string;
+  page: string;
+  title: string;
+};
+const Kanji: React.FC<NativeStackScreenProps<ParamListBase, "Kanji">> = ({
   route,
   navigation,
 }) => {
-  const { id, title, page }: string | any = route.params;
+  const { id, title, page } = route.params as KanjiScreenParams;
+
   const dispatch = useDispatch();
-  const { isChapter } = useSelector((state: any) => state.Kanji);
+  const { isChapter } = useSelector((state: RootState) => state.Kanji);
   const [showMenu, setShowMenu] = useState(false);
   const [number, onChangeNumber] = useState("");
   const flatRef = useRef<any>();
@@ -129,6 +137,7 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
       onChangeNumber("25");
     }, 500);
   }, [showMenu]);
+
   const viewed =
     isChapter &&
     isChapter.lenth !== 0 &&
@@ -151,12 +160,14 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
       </FlatListBox>
     );
   };
+
   if (flatRef.current && Number(number) - 1 < 50) {
     flatRef.current.scrollToIndex({
       animated: true,
       index: Number(number) - 1 === -1 ? 0 : Number(number) - 1,
     });
   }
+
   return (
     <Container>
       <Card
@@ -189,7 +200,7 @@ const Kanji: React.FC<NativeStackScreenProps<any, "Kanji">> = ({
               data={Data[title][id].kanji}
               renderItem={renderGridItem}
               onScrollToIndexFailed={(info) => {
-                const wait = new Promise((resolve: any) =>
+                const wait = new Promise((resolve: unknown) =>
                   setTimeout(resolve, 500)
                 );
                 wait.then(() => {

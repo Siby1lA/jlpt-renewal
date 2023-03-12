@@ -2,6 +2,7 @@ const init = {
   isWhat: [],
   isChapter: ["0", "0"],
 };
+
 export default function (state = init, action: any) {
   switch (action.type) {
     case "SET_WHAT":

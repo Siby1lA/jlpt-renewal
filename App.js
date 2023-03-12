@@ -3,13 +3,13 @@ import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import { ThemeProvider } from "styled-components/native";
-import { lightTheme } from "./styled";
 import Navigator from "./app/navigation/Navigator";
 import { Provider } from "react-redux";
 import rootReducer from "./app/redux/reducer";
 import { legacy_createStore as createStore } from "redux";
 import styled from "styled-components/native";
 import { MobileAds } from "react-native-google-mobile-ads";
+import { lightTheme } from "./styled";
 // import { MobileAds } from "react-native-google-mobile-ads";
 
 const Box = styled.View`
@@ -36,7 +36,7 @@ export default function App() {
           .then((adapterStatuses) => {
             // Initialization complete!
           });
-        await new Promise((resolve: any) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
         console.warn(e);
       } finally {
@@ -60,12 +60,12 @@ export default function App() {
   }
 
   return (
-    <ThemeProvider theme={lightTheme}>
-      <Provider store={store}>
+    <Provider store={store}>
+      <ThemeProvider theme={lightTheme}>
         <NavigationContainer>
           <Navigator />
         </NavigationContainer>
-      </Provider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </Provider>
   );
 }

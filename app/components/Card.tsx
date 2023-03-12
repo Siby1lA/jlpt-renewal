@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setHiragana, setImi, setUpdate } from "../redux/actions/TriggerAction";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Speech from "expo-speech";
+import Particle from "./Particle";
+import { RootState } from "../redux/reducer";
 // import {
 //   AdEventType,
 //   InterstitialAd,
@@ -47,17 +49,17 @@ const KanjiText = styled.Text`
   font-family: "K-Gothic";
   font-size: 60px;
   margin: 5px 0px;
-  color: ${(props: any) => props.theme.wordColor};
+  color: ${(props) => props.theme.wordColor};
 `;
 
 const KanjiImiText = styled.Text`
   font-size: 20px;
-  color: ${(props: any) => props.theme.wordColor};
+  color: ${(props) => props.theme.wordColor};
 `;
 const HuriganaText = styled.Text`
   font-family: "K-Gothic";
   font-size: 20px;
-  color: ${(props: any) => props.theme.wordColor};
+  color: ${(props) => props.theme.wordColor};
 `;
 const CountText = styled.Text`
   font-family: "K-Gothic";
@@ -74,7 +76,7 @@ const KanjiWrap = styled.View`
 const ReibunWrap = styled.View`
   flex: 1;
   width: 100%;
-  background-color: ${(props: any) => props.theme.rbColor};
+  background-color: ${(props) => props.theme.rbColor};
   align-items: center;
   justify-content: center;
   padding: 10px 0px;
@@ -82,7 +84,7 @@ const ReibunWrap = styled.View`
 `;
 const ReinunText = styled.Text`
   font-family: "K-Gothic";
-  color: ${(props: any) => props.theme.wordColor};
+  color: ${(props) => props.theme.wordColor};
   font-size: 20px;
 `;
 const ReibunFurigana = styled(ReinunText)`
@@ -92,7 +94,7 @@ const ReibunFurigana = styled(ReinunText)`
   margin-bottom: 5px;
 `;
 const ReibunImiText = styled.Text`
-  color: ${(props: any) => props.theme.wordColor};
+  color: ${(props) => props.theme.wordColor};
   font-size: 20px;
   margin-top: 7px;
 `;
@@ -131,14 +133,14 @@ const CharaImg = styled.Image`
 `;
 interface IKanji {
   data: {
-    hurigana: string;
-    imi: string;
-    reibun: string;
-    kanji: string;
-    reibunImi: string;
-    reibunFurigana: string;
+    hurigana: string | string[];
+    imi: string | string[];
+    reibun: string | string[];
+    kanji: string | string[];
+    reibunImi: string | string[];
+    reibunFurigana: string | string[];
   };
-  pop: any;
+  pop: () => void;
   viewed: boolean;
   myword: boolean;
 }
@@ -158,8 +160,9 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
   const [state, setState] = useState<number>(0);
   const [valid, setValid] = useState<boolean>(false);
   const [view, setView] = useState<boolean>(false);
+  const [shot, setShot] = useState<boolean>(false);
   const { isHiragana, isImi, isReibun, isReset, isUpdate, isMovePage } =
-    useSelector((state: any) => state.Trigger);
+    useSelector((state: RootState) => state.Trigger);
   const dispatch = useDispatch();
   const scale = useRef(new Animated.Value(1)).current;
   const position = useRef(new Animated.Value(0)).current;
@@ -262,7 +265,7 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
   useEffect(() => {
     // 리셋 트리거
     reset();
-    setIndex(0);
+    setIndex(48);
   }, [isReset]);
 
   // 페이지 이동
@@ -286,11 +289,16 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
 
   useEffect(() => {
     if (viewed) {
-      AsyncStorage.getItem("INDEX", (err: unknown, result: any) => {
-        const savedIndex = JSON.parse(result);
-        setIndex(savedIndex);
-        count = savedIndex;
-      });
+      AsyncStorage.getItem(
+        "INDEX",
+        (err: unknown, result: string | null | undefined) => {
+          if (result) {
+            const savedIndex = JSON.parse(result);
+            setIndex(savedIndex);
+            count = savedIndex;
+          }
+        }
+      );
     } else {
       setIndex(0);
       count = 0;
@@ -306,28 +314,23 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
 
   const result = async () => {
     if (!myword) {
-      Alert.alert("끝났습니다!", "뒤로가시겠습니까?", [
-        {
-          text: "네",
-          style: "cancel",
-          onPress: () => {
-            // interstitial.show();
-            setIndex(0);
-            reset();
-            count = 0;
-            pop();
-          },
-        },
-        {
-          text: "아니오",
-          style: "destructive",
-          onPress: () => {
-            // interstitial.show();
-            setIndex(0);
-            reset();
-          },
-        },
-      ]);
+      setShot(true);
+      // setTimeout(() => {
+      //   setShot(false);
+      //   Alert.alert("축하합니다!", "50단어를 외우셨습니다.", [
+      //     {
+      //       text: "확인",
+      //       style: "cancel",
+      //       onPress: () => {
+      //         // interstitial.show();
+      //         setIndex(0);
+      //         reset();
+      //         count = 0;
+      //         pop();
+      //       },
+      //     },
+      //   ]);
+      // }, 4500);
     } else {
       setIndex(0);
     }
@@ -335,64 +338,85 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
 
   const onFavorite = () => {
     if (!myword) {
-      AsyncStorage.getItem("MYWORD", (err: unknown, result: any) => {
-        let obj = JSON.parse(result);
-        if (obj === null) {
-          let newObj: any = {
-            myWord: {
-              hurigana: [],
-              imi: [],
-              reibun: [],
-              kanji: [],
-              reibunImi: [],
-              reibunFurigana: [],
-            },
-          };
-          Object.keys(newObj.myWord).forEach((key) => {
-            newObj.myWord[key].push(KanjiData[key][index]);
-          });
-          AsyncStorage.setItem("MYWORD", JSON.stringify(newObj));
-        } else {
-          if (myWorded(KanjiData.imi[index])) {
-            AsyncStorage.getItem("MYWORD", (err: unknown, result: any) => {
-              let obj = JSON.parse(result);
-              let curIdx = obj.myWord.imi.indexOf(KanjiData.imi[index]);
+      AsyncStorage.getItem(
+        "MYWORD",
+        (err: unknown, result: string | null | undefined) => {
+          let obj = {};
+          if (result) {
+            obj = JSON.parse(result);
+          }
+          if (obj === null) {
+            let newObj = {
+              myWord: {
+                hurigana: [],
+                imi: [],
+                reibun: [],
+                kanji: [],
+                reibunImi: [],
+                reibunFurigana: [],
+              },
+            };
+            Object.keys(newObj.myWord).forEach((key) => {
+              newObj.myWord[key].push(KanjiData[key][index]);
+            });
+            AsyncStorage.setItem("MYWORD", JSON.stringify(newObj));
+          } else {
+            if (myWorded(KanjiData.imi[index])) {
+              AsyncStorage.getItem(
+                "MYWORD",
+                (err: unknown, result: string | null | undefined) => {
+                  if (result) {
+                    let obj = JSON.parse(result);
+                    let curIdx = obj.myWord.imi.indexOf(KanjiData.imi[index]);
+                    Object.keys(obj.myWord).forEach((key) => {
+                      obj.myWord[key].splice(curIdx, 1);
+                    });
+                    AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
+                    isUpdate
+                      ? dispatch(setUpdate(false))
+                      : dispatch(setUpdate(true));
+                  }
+                }
+              );
+            } else {
               Object.keys(obj.myWord).forEach((key) => {
-                obj.myWord[key].splice(curIdx, 1);
+                obj.myWord[key].push(KanjiData[key][index]);
               });
               AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
-              isUpdate ? dispatch(setUpdate(false)) : dispatch(setUpdate(true));
-            });
-          } else {
-            Object.keys(obj.myWord).forEach((key) => {
-              obj.myWord[key].push(KanjiData[key][index]);
-            });
-            AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
+            }
           }
         }
-      });
+      );
       isUpdate ? dispatch(setUpdate(false)) : dispatch(setUpdate(true));
     }
     if (myword) {
-      AsyncStorage.getItem("MYWORD", (err: unknown, result: any) => {
-        let obj = JSON.parse(result);
-        Object.keys(obj.myWord).forEach((key) => {
-          obj.myWord[key].splice(index, 1);
-        });
-        AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
-        isUpdate ? dispatch(setUpdate(false)) : dispatch(setUpdate(true));
-        setIndex((prev) => prev - 1);
-        AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
-      });
+      AsyncStorage.getItem(
+        "MYWORD",
+        (err: unknown, result: string | null | undefined) => {
+          if (result) {
+            let obj = JSON.parse(result);
+            Object.keys(obj.myWord).forEach((key) => {
+              obj.myWord[key].splice(index, 1);
+            });
+            AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
+            isUpdate ? dispatch(setUpdate(false)) : dispatch(setUpdate(true));
+            setIndex((prev) => prev - 1);
+            AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
+          }
+        }
+      );
     }
   };
 
   const myWorded = (data: string) => {
-    AsyncStorage.getItem("MYWORD", (err: unknown, result: any) => {
-      if (result) {
-        setValid(result.includes(data));
+    AsyncStorage.getItem(
+      "MYWORD",
+      (err: unknown, result: string | null | undefined) => {
+        if (result) {
+          setValid(result.includes(data));
+        }
       }
-    });
+    );
     return valid;
   };
 
@@ -553,6 +577,7 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
           </CountText>
         </Wrapper>
       ) : null}
+      {shot && <Particle />}
     </CardContainer>
   );
 };

@@ -9,27 +9,25 @@ import { setChapter } from "../redux/actions/KanjiAction";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import AddBanner from "../components/AddBanner";
-interface ITheme {
-  textColor?: string;
-  bgColor?: string;
-}
+import { RootState } from "../redux/reducer";
+import { ParamListBase } from "@react-navigation/native";
+
 interface IData {
   item: {
     title: string;
-    chapter: string;
-    subtitle: string | number;
+    chapter: { id: string; page: string }[];
   };
 }
-const Wrapper = styled.View<ITheme>`
+const Wrapper = styled.View`
   flex: 1;
-  background-color: ${(props: any) => props.theme.bgColor};
+  background-color: ${(props) => props.theme.bgColor};
 `;
 const Header = styled.View`
   border-radius: 10px;
   margin: 0px 20px;
   margin-top: 20px;
   padding: 10px;
-  background-color: ${(props: any) => props.theme.cardColor};
+  background-color: ${(props) => props.theme.cardColor};
   align-items: center;
   border: 1px solid;
   height: 170px;
@@ -44,11 +42,11 @@ const TileWrap = styled.TouchableOpacity`
   flex: 1;
   flex-grow: 1;
 `;
-const Tile = styled.View<ITheme>`
+const Tile = styled.View`
   border-radius: 10px;
   margin: 10px;
   padding: 20px;
-  background-color: ${(props: any) => props.theme.cardColor};
+  background-color: ${(props) => props.theme.cardColor};
   align-items: center;
   border: 1px solid;
   height: 155px;
@@ -56,7 +54,7 @@ const Tile = styled.View<ITheme>`
 
 const ChapterText = styled.Text`
   margin-top: 2%;
-  color: ${(props: any) => props.theme.textColor};
+  color: ${(props) => props.theme.textColor};
   font-size: 28px;
   font-family: "K-Gothic";
 `;
@@ -93,7 +91,7 @@ const AutherText = styled(MeigenText)`
   left: 5%;
   z-index: 0;
 `;
-const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
+const Home: React.FC<NativeStackScreenProps<ParamListBase, "Home">> = ({
   navigation,
 }) => {
   const [meigen, setMeigen] = useState<string>(
@@ -130,9 +128,14 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
 
   useEffect(() => {
     //redux-persit + asyncstorage 변경 예정
-    AsyncStorage.getItem("VIEWED", (err: unknown, result: any) => {
-      dispatch(setChapter(JSON.parse(result)));
-    });
+    AsyncStorage.getItem(
+      "VIEWED",
+      (err: unknown, result: string | null | undefined) => {
+        if (result) {
+          dispatch(setChapter(JSON.parse(result)));
+        }
+      }
+    );
     fetch("https://meigen.doodlenote.net/api/json.php")
       .then((res) => res.json())
       .then((res) => {
@@ -140,34 +143,34 @@ const Home: React.FC<NativeStackScreenProps<any, "Home">> = ({
         setAuther(res[0].auther);
       });
   }, []);
-  const { isChapter } = useSelector((state: any) => state.Kanji);
-  const renderGridItem = (itemData: IData) => {
+
+  const { isChapter } = useSelector((state: RootState) => state.Kanji);
+
+  const renderGridItem = ({ item }: IData) => {
     return (
       <TileWrap
         onPress={() => {
-          if (itemData.item.title !== "単語") {
+          if (item.title !== "単語") {
             navigation.navigate("Chapter", {
-              title: itemData.item.title,
-              chapter: itemData.item.chapter,
+              title: item.title,
+              chapter: item.chapter,
             });
           } else {
             navigation.navigate("MyWord");
           }
         }}
       >
-        {isChapter &&
-        isChapter.lenth !== 0 &&
-        isChapter[0] === itemData.item.title ? (
+        {isChapter && isChapter.lenth !== 0 && isChapter[0] === item.title ? (
           <Tile>
             <CharaImg source={require("../assets/image/chara.png")} />
             <NikuImg source={require("../assets/image/niku2.png")} />
-            <ChapterText>{itemData.item.title}</ChapterText>
+            <ChapterText>{item.title}</ChapterText>
           </Tile>
         ) : (
           <Tile>
             <CharaImg source={require("../assets/image/chara.png")} />
             <NikuImg source={require("../assets/image/niku.png")} />
-            <ChapterText>{itemData.item.title}</ChapterText>
+            <ChapterText>{item.title}</ChapterText>
           </Tile>
         )}
       </TileWrap>

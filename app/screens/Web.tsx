@@ -1,12 +1,16 @@
+import { ParamListBase } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect } from "react";
 import { WebView } from "react-native-webview";
-
-const Web: React.FC<NativeStackScreenProps<any, "Web">> = ({
+type WebScreenParams = {
+  title: string;
+  uri: string;
+};
+const Web: React.FC<NativeStackScreenProps<ParamListBase, "Web">> = ({
   route,
   navigation,
 }) => {
-  const { title, uri }: string | any = route.params;
+  const { title, uri } = route.params as WebScreenParams;
   useEffect(() => {
     navigation.setOptions({
       title,

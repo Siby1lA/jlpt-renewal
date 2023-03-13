@@ -1,14 +1,19 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components/native";
-import Data from "../data/data.json";
 import Card from "../components/Card";
 import { useDispatch, useSelector } from "react-redux";
 import { setChapter } from "../redux/actions/KanjiAction";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CardBtn from "../components/CardBtn";
 import { Ionicons } from "@expo/vector-icons";
-import { Alert, FlatList, Modal, Pressable } from "react-native";
+import {
+  Alert,
+  DataDetectorTypes,
+  FlatList,
+  Modal,
+  Pressable,
+} from "react-native";
 import { setMovePage } from "../redux/actions/TriggerAction";
 import { ParamListBase } from "@react-navigation/native";
 import { RootState } from "../redux/reducer";
@@ -101,17 +106,32 @@ type KanjiScreenParams = {
   page: string;
   title: string;
 };
+
+interface KanjiType {
+  [key: string]: {
+    [key: string]: {
+      hurigana: string[];
+      imi: string[];
+      reibun: string[];
+      kanji: string[];
+      reibunImi: string[];
+      reibunFurigana: string[];
+    };
+  };
+}
+
 const Kanji: React.FC<NativeStackScreenProps<ParamListBase, "Kanji">> = ({
   route,
   navigation,
 }) => {
   const { id, title, page } = route.params as KanjiScreenParams;
-
+  const Data: KanjiType = require("../data/data.json");
   const dispatch = useDispatch();
   const { isChapter } = useSelector((state: RootState) => state.Kanji);
-  const [showMenu, setShowMenu] = useState(false);
-  const [number, onChangeNumber] = useState("");
-  const flatRef = useRef<any>();
+  const [showMenu, setShowMenu] = useState<boolean>(false);
+  const [number, onChangeNumber] = useState<string>("");
+  const flatRef = useRef<FlatList<DataDetectorTypes>>(null);
+
   useEffect(() => {
     navigation.setOptions({
       title: `${title} ${page}`,
@@ -200,7 +220,7 @@ const Kanji: React.FC<NativeStackScreenProps<ParamListBase, "Kanji">> = ({
               data={Data[title][id].kanji}
               renderItem={renderGridItem}
               onScrollToIndexFailed={(info) => {
-                const wait = new Promise((resolve: unknown) =>
+                const wait = new Promise<void>((resolve) =>
                   setTimeout(resolve, 500)
                 );
                 wait.then(() => {

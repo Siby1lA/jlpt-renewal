@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { Alert, Animated, PanResponder, Platform, View } from "react-native";
+import {
+  Alert,
+  Animated,
+  Button,
+  PanResponder,
+  Platform,
+  View,
+} from "react-native";
 import styled from "styled-components/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -131,15 +138,38 @@ const CharaImg = styled.Image`
   width: 70px;
   height: 42px;
 `;
+
+interface CompleteCharaImgProps {
+  left?: number;
+  right?: number;
+}
+
+const CompleteCharaImg = styled.Image<CompleteCharaImgProps>`
+  position: absolute;
+  bottom: 0px;
+  width: 70px;
+  height: 105px;
+  left: ${(props) => (props.left ? `${props.left}px` : 0)};
+  right: ${(props) => (props.right ? `${props.right}px` : 0)};
+`;
+const CompleteWord = styled.Text`
+  position: absolute;
+  top: 50%;
+  font-size: 22px;
+  font-weight: 600;
+  color: ${(props) => props.theme.wordColor};
+`;
+interface IKanjiData {
+  hurigana: string[];
+  imi: string[];
+  reibun: string[];
+  kanji: string[];
+  reibunImi: string[];
+  reibunFurigana: string[];
+}
+
 interface IKanji {
-  data: {
-    hurigana: string | string[];
-    imi: string | string[];
-    reibun: string | string[];
-    kanji: string | string[];
-    reibunImi: string | string[];
-    reibunFurigana: string | string[];
-  };
+  data: IKanjiData;
   pop: () => void;
   viewed: boolean;
   myword: boolean;
@@ -312,102 +342,71 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
     };
   }, []);
 
+  const resultView = async () => {
+    setShot(false);
+    setIndex(0);
+    reset();
+    count = 0;
+    pop();
+  };
+
   const result = async () => {
     if (!myword) {
       setShot(true);
-      // setTimeout(() => {
-      //   setShot(false);
-      //   Alert.alert("축하합니다!", "50단어를 외우셨습니다.", [
-      //     {
-      //       text: "확인",
-      //       style: "cancel",
-      //       onPress: () => {
-      //         // interstitial.show();
-      //         setIndex(0);
-      //         reset();
-      //         count = 0;
-      //         pop();
-      //       },
-      //     },
-      //   ]);
-      // }, 4500);
     } else {
       setIndex(0);
     }
   };
 
-  const onFavorite = () => {
-    if (!myword) {
-      AsyncStorage.getItem(
-        "MYWORD",
-        (err: unknown, result: string | null | undefined) => {
-          let obj = {};
-          if (result) {
-            obj = JSON.parse(result);
-          }
-          if (obj === null) {
-            let newObj = {
-              myWord: {
-                hurigana: [],
-                imi: [],
-                reibun: [],
-                kanji: [],
-                reibunImi: [],
-                reibunFurigana: [],
-              },
-            };
-            Object.keys(newObj.myWord).forEach((key) => {
-              newObj.myWord[key].push(KanjiData[key][index]);
-            });
-            AsyncStorage.setItem("MYWORD", JSON.stringify(newObj));
-          } else {
-            if (myWorded(KanjiData.imi[index])) {
-              AsyncStorage.getItem(
-                "MYWORD",
-                (err: unknown, result: string | null | undefined) => {
-                  if (result) {
-                    let obj = JSON.parse(result);
-                    let curIdx = obj.myWord.imi.indexOf(KanjiData.imi[index]);
-                    Object.keys(obj.myWord).forEach((key) => {
-                      obj.myWord[key].splice(curIdx, 1);
-                    });
-                    AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
-                    isUpdate
-                      ? dispatch(setUpdate(false))
-                      : dispatch(setUpdate(true));
-                  }
-                }
-              );
-            } else {
-              Object.keys(obj.myWord).forEach((key) => {
-                obj.myWord[key].push(KanjiData[key][index]);
-              });
-              AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
-            }
-          }
-        }
-      );
-      isUpdate ? dispatch(setUpdate(false)) : dispatch(setUpdate(true));
-    }
-    if (myword) {
-      AsyncStorage.getItem(
-        "MYWORD",
-        (err: unknown, result: string | null | undefined) => {
-          if (result) {
-            let obj = JSON.parse(result);
-            Object.keys(obj.myWord).forEach((key) => {
+  const onFavorite = async () => {
+    try {
+      let obj: { myWord: IKanjiData } = {
+        myWord: {
+          hurigana: [],
+          imi: [],
+          reibun: [],
+          kanji: [],
+          reibunImi: [],
+          reibunFurigana: [],
+        },
+      };
+      if (myword) {
+        const result = await AsyncStorage.getItem("MYWORD");
+        if (result) {
+          obj = JSON.parse(result);
+          (Object.keys(obj.myWord) as Array<keyof IKanjiData>).forEach(
+            (key) => {
               obj.myWord[key].splice(index, 1);
-            });
-            AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
-            isUpdate ? dispatch(setUpdate(false)) : dispatch(setUpdate(true));
-            setIndex((prev) => prev - 1);
-            AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
+            }
+          );
+          setIndex((prev) => prev - 1);
+        }
+      } else {
+        const result = await AsyncStorage.getItem("MYWORD");
+        if (result) {
+          obj = JSON.parse(result);
+          if (myWorded(KanjiData.imi[index])) {
+            const curIdx = obj.myWord.imi.indexOf(KanjiData.imi[index]);
+            (Object.keys(obj.myWord) as Array<keyof IKanjiData>).forEach(
+              (key) => {
+                obj.myWord[key].splice(curIdx, 1);
+              }
+            );
+          } else {
+            (Object.keys(obj.myWord) as Array<keyof IKanjiData>).forEach(
+              (key) => {
+                obj.myWord[key].push(KanjiData[key][index]);
+              }
+            );
           }
         }
-      );
+      }
+      await AsyncStorage.setItem("MYWORD", JSON.stringify(obj));
+      isUpdate ? dispatch(setUpdate(false)) : dispatch(setUpdate(true));
+    } catch (error) {
+      console.log(error);
     }
   };
-
   const myWorded = (data: string) => {
     AsyncStorage.getItem(
       "MYWORD",
@@ -448,9 +447,19 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
             >
               <FavoritesWrap onPress={() => onFavorite()}>
                 <FavoritesIcon>
-                  <Ionicons name="bookmark-outline" size={38} color="#27272a" />
+                  {myword ? (
+                    <Ionicons name="bookmark" size={38} color="#27272a" />
+                  ) : (
+                    <Ionicons
+                      name="bookmark-outline"
+                      size={38}
+                      color="#27272a"
+                    />
+                  )}
                 </FavoritesIcon>
-                <FavoritesText>단어장 추가</FavoritesText>
+                <FavoritesText>
+                  {myword ? "단어장 삭제" : "단어장 추가"}
+                </FavoritesText>
               </FavoritesWrap>
               <KanjiWrap>
                 <IconWrap>
@@ -512,9 +521,7 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
               <FavoritesIcon>
                 <Ionicons name="bookmark" size={38} color="#27272a" />
               </FavoritesIcon>
-              <FavoritesText>
-                {myword ? "단어장 삭제" : "단어장 삭제"}
-              </FavoritesText>
+              <FavoritesText>단어장 삭제</FavoritesText>
             </FavoritesWrap>
           ) : (
             <FavoritesWrap onPress={() => onFavorite()}>
@@ -577,7 +584,17 @@ const Card = ({ data: KanjiData, pop, viewed, myword = false }: IKanji) => {
           </CountText>
         </Wrapper>
       ) : null}
-      {shot && <Particle />}
+      {shot && (
+        <Wrapper valid={Platform.OS === "ios" ? false : true}>
+          <Particle />
+          <CompleteCharaImg source={require("../assets/image/chara.png")} />
+          <CompleteCharaImg
+            source={require("../assets/image/chara.png")}
+            left={50}
+          />
+          <CompleteWord onPress={() => resultView()}>끝났습니다.</CompleteWord>
+        </Wrapper>
+      )}
     </CardContainer>
   );
 };

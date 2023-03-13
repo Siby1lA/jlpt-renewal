@@ -40,6 +40,7 @@ const NotWord = styled.Text`
   font-weight: 600;
   color: ${(props) => props.theme.wordColor};
 `;
+
 interface IType {
   myWord: {
     hurigana: string[];

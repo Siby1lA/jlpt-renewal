@@ -8,5 +8,6 @@ declare module "styled-components" {
     wordColor: string;
     cardColor: string;
     rbColor: string;
+    liceneColor: string;
   }
 }

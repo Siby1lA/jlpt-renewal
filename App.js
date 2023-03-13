@@ -10,16 +10,15 @@ import { legacy_createStore as createStore } from "redux";
 import styled from "styled-components/native";
 import { MobileAds } from "react-native-google-mobile-ads";
 import { lightTheme } from "./styled";
+import LottieView from "lottie-react-native";
 // import { MobileAds } from "react-native-google-mobile-ads";
 
 const Box = styled.View`
   flex: 1;
+  width: 100%;
+  height: 100%;
   align-items: center;
   justify-content: center;
-`;
-const CharaImg = styled.Image`
-  width: 120px;
-  height: 175px;
 `;
 
 export default function App() {
@@ -54,7 +53,14 @@ export default function App() {
   if (!appIsReady) {
     return (
       <Box onLayout={onLayoutRootView}>
-        <CharaImg source={require("./app/assets/image/chara.png")} />
+        <LottieView
+          style={{
+            width: "30%",
+          }}
+          source={require("./app/assets/lottie/splash.json")}
+          autoPlay
+          loop
+        />
       </Box>
     );
   }

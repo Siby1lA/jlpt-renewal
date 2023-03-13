@@ -1,7 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import styled from "styled-components/native";
-import CardBtn from "../components/CardBtn";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Card from "../components/Card";
 import { useSelector } from "react-redux";
@@ -95,7 +94,6 @@ const MyWord: React.FC<NativeStackScreenProps<ParamListBase, "MyWord">> = ({
           </Wrapper>
         </CardContainer>
       )}
-      <CardBtn />
     </Container>
   );
 };

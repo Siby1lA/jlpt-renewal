@@ -5,7 +5,6 @@ import Card from "../components/Card";
 import { useDispatch, useSelector } from "react-redux";
 import { setChapter } from "../redux/actions/KanjiAction";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import CardBtn from "../components/CardBtn";
 import { Ionicons } from "@expo/vector-icons";
 import {
   Alert,
@@ -13,6 +12,7 @@ import {
   FlatList,
   Modal,
   Pressable,
+  ProgressBarAndroidBase,
 } from "react-native";
 import { setMovePage } from "../redux/actions/TriggerAction";
 import { ParamListBase } from "@react-navigation/native";
@@ -195,8 +195,9 @@ const Kanji: React.FC<NativeStackScreenProps<ParamListBase, "Kanji">> = ({
         pop={navigation.pop}
         viewed={viewed}
         myword={false}
+        title={title}
+        page={page}
       />
-      <CardBtn />
       <Modal
         onRequestClose={() => setShowMenu(false)}
         animationType={"fade"}

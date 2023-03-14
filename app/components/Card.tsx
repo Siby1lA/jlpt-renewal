@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Animated, PanResponder, Platform, Text, View } from "react-native";
+import { Animated, PanResponder, Platform, View } from "react-native";
 import styled from "styled-components/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";

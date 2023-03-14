@@ -376,6 +376,8 @@ PODS:
   - RNScreens (3.18.2):
     - React-Core
     - React-RCTImage
+  - TextToSpeech (4.1.0):
+    - React
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -428,6 +430,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNGoogleMobileAds (from `../node_modules/react-native-google-mobile-ads`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - TextToSpeech (from `../node_modules/react-native-tts`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -537,6 +540,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-google-mobile-ads"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  TextToSpeech:
+    :path: "../node_modules/react-native-tts"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -596,6 +601,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 889cea2408e52fe71da475306dcef43951577da0
   RNGoogleMobileAds: 17e0ad1791f2878c07509a0a1818511d99656c68
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
+  TextToSpeech: b3aa777ff5585705f179c0a2436bfd0926d1716e
   Yoga: eca980a5771bf114c41a754098cd85e6e0d90ed7
 
 PODFILE CHECKSUM: db00c755a58ef9685a8ef0a7daa2197173cd9a17

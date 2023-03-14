@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { setHiragana, setImi, setUpdate } from "../redux/actions/TriggerAction";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as Speech from "expo-speech";
+import Tts from "react-native-tts";
 import Particle from "./Particle";
 import { RootState } from "../redux/reducer";
 import LottieView from "lottie-react-native";
@@ -507,7 +507,27 @@ const Card = ({
 
   const speak = async (sounds: string) => {
     if (sounds) {
-      Speech.speak(sounds, { language: "ja-JP" });
+      Tts.getInitStatus().then(
+        () => {
+          Tts.setDefaultLanguage("ja-JP");
+          Tts.setIgnoreSilentSwitch("ignore");
+          // Tts.addEventListener("tts-start", (event) =>
+          //   console.log("start", event)
+          // );
+          // Tts.addEventListener("tts-finish", (event) =>
+          //   console.log("finish", event)
+          // );
+          // Tts.addEventListener("tts-cancel", (event) =>
+          //   console.log("cancel", event)
+          // );
+          Tts.speak(sounds);
+        },
+        (err) => {
+          if (err.code === "no_engine") {
+            Tts.requestInstallEngine();
+          }
+        }
+      );
     }
   };
   const viewImiValid = () => {

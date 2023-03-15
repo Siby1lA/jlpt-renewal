@@ -29,6 +29,7 @@ type RootStackParamList = {
   Board: undefined;
   Setting: undefined;
   Mypage: undefined;
+  Register: undefined;
 };
 
 const BottomTab = () => {
@@ -53,6 +54,13 @@ const BottomTab = () => {
         />
       </Btn>
       <Btn onPress={() => navigation.replace("Mypage")}>
+        <Ionicons
+          name={name === "Mypage" ? "person" : "person-outline"}
+          size={24}
+          color={"#ecf0f1"}
+        />
+      </Btn>
+      <Btn onPress={() => navigation.replace("Register")}>
         <Ionicons
           name={name === "Mypage" ? "person" : "person-outline"}
           size={24}

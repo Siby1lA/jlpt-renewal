@@ -9,6 +9,7 @@ import Setting from "../screens/Setting";
 import Web from "../screens/Web";
 import Board from "../screens/Board";
 import Mypage from "../screens/Mypage";
+import Register from "../screens/Register";
 
 const Nav = createNativeStackNavigator();
 const Root = () => (
@@ -25,7 +26,7 @@ const Root = () => (
     <Nav.Screen
       options={{
         headerTitle: "일단냥",
-        animation: "fade",
+        animation: "none",
       }}
       name="Home"
       component={Home}
@@ -44,7 +45,7 @@ const Root = () => (
     <Nav.Screen
       options={{
         headerTitle: "게시판",
-        animation: "fade",
+        animation: "none",
       }}
       name="Board"
       component={Board}
@@ -52,10 +53,18 @@ const Root = () => (
     <Nav.Screen
       options={{
         headerTitle: "내 정보",
-        animation: "fade",
+        animation: "none",
       }}
       name="Mypage"
       component={Mypage}
+    />
+    <Nav.Screen
+      options={{
+        headerTitle: "회원가입",
+        animation: "none",
+      }}
+      name="Register"
+      component={Register}
     />
   </Nav.Navigator>
 );

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">일단냥</string>
+    <string name="kakao_app_key">92b465d9d62d76ed3bdf269cd07f7575</string>
 </resources>

@@ -12,6 +12,7 @@
 		493080DB298ACCE800ED0958 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		493080DC298ADC6C00ED0958 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		497F285629C15128006148B2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 497F285529C15128006148B2 /* GoogleService-Info.plist */; };
+		497F285829C1912E006148B2 /* SwiftBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497F285729C1912D006148B2 /* SwiftBridge.swift */; };
 		700D318E546C0B282476FF71 /* Pods_jlpt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D38FE23CFEA410123C00F0E2 /* Pods_jlpt.framework */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 /* End PBXBuildFile section */
@@ -26,6 +27,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = jlpt/main.m; sourceTree = "<group>"; };
 		493080D6298A337100ED0958 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
 		497F285529C15128006148B2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		497F285729C1912D006148B2 /* SwiftBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBridge.swift; sourceTree = "<group>"; };
 		6C2E3173556A471DD304B334 /* Pods-jlpt.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jlpt.debug.xcconfig"; path = "Target Support Files/Pods-jlpt/Pods-jlpt.debug.xcconfig"; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-jlpt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jlpt.release.xcconfig"; path = "Target Support Files/Pods-jlpt/Pods-jlpt.release.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = jlpt/SplashScreen.storyboard; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
+				497F285729C1912D006148B2 /* SwiftBridge.swift */,
 			);
 			name = jlpt;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				497F285829C1912E006148B2 /* SwiftBridge.swift in Sources */,
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

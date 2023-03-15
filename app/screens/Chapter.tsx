@@ -27,6 +27,7 @@ const Wrapper = styled.View`
 const Contents = styled.View`
   flex: 1;
   margin: 10px;
+  margin-bottom: 17%;
 `;
 const TileWrap = styled.TouchableOpacity`
   flex-grow: 1;

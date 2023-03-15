@@ -2,6 +2,7 @@ import { ParamListBase } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Platform } from "react-native";
 import styled from "styled-components/native";
+import BottomTab from "../components/BottomTab";
 
 const Wrapper = styled.View`
   flex: 1;
@@ -11,7 +12,7 @@ const Box = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: space-between;
   padding: 15px;
-  border-bottom-color: #a8a8a8;
+  border-bottom-color: #d3cfcf;
   border-bottom-width: 0.5px;
 `;
 const Text = styled.Text`
@@ -21,28 +22,6 @@ const Text = styled.Text`
 const TextV = styled(Text)`
   font-size: 20px;
   color: gray;
-`;
-const NameBox = styled.View`
-  margin-top: 20px;
-  align-items: center;
-  padding: 10px;
-`;
-const NameText = styled.Text`
-  color: ${(props) => props.theme.textColor};
-  font-size: 16px;
-`;
-const CharaImg = styled.Image`
-  position: absolute;
-  left: 10px;
-  width: 80px;
-  height: 55px;
-`;
-const CharaImgRight = styled.Image`
-  transform: scaleX(-1);
-  position: absolute;
-  right: 10px;
-  width: 80px;
-  height: 55px;
 `;
 const Setting: React.FC<NativeStackScreenProps<ParamListBase, "Setting">> = ({
   navigation,
@@ -110,7 +89,7 @@ const Setting: React.FC<NativeStackScreenProps<ParamListBase, "Setting">> = ({
       </Box>
       <Box>
         <Text>앱 버전</Text>
-        <TextV>v1.1.0 ⚙️</TextV>
+        <TextV>v1.2.0 ⚙️</TextV>
       </Box>
       <Box
         onPress={() =>
@@ -123,12 +102,7 @@ const Setting: React.FC<NativeStackScreenProps<ParamListBase, "Setting">> = ({
         <Text>개발자</Text>
         <TextV>🧑🏻‍💻</TextV>
       </Box>
-      <NameBox>
-        <CharaImg source={require("../assets/image/chara2.png")} />
-        <NameText>일본어 단어 공부하는 냥이</NameText>
-        <NameText>@twilight</NameText>
-        <CharaImgRight source={require("../assets/image/chara2.png")} />
-      </NameBox>
+      <BottomTab />
     </Wrapper>
   );
 };

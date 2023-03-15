@@ -11,6 +11,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import AddBanner from "../components/AddBanner";
 import { RootState } from "../redux/reducer";
 import { ParamListBase } from "@react-navigation/native";
+import BottomTab from "../components/BottomTab";
 
 interface IData {
   item: {
@@ -36,6 +37,7 @@ const Header = styled.View`
 const Contents = styled.View`
   flex: 1;
   margin: 10px;
+  margin-bottom: 17%;
 `;
 
 const TileWrap = styled.TouchableOpacity`
@@ -102,6 +104,7 @@ const Home: React.FC<NativeStackScreenProps<ParamListBase, "Home">> = ({
 
   useEffect(() => {
     navigation.setOptions({
+      headerTitle: "일단냥",
       headerRight: () => (
         <Ionicons
           onPress={() => navigation.navigate("Setting")}
@@ -194,6 +197,7 @@ const Home: React.FC<NativeStackScreenProps<ParamListBase, "Home">> = ({
           numColumns={2}
         />
       </Contents>
+      <BottomTab />
       {/* <AddBanner /> */}
     </Wrapper>
   );

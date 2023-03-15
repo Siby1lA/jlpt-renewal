@@ -7,6 +7,8 @@ import Colors from "../constants/Colors";
 import MyWord from "../screens/MyWord";
 import Setting from "../screens/Setting";
 import Web from "../screens/Web";
+import Board from "../screens/Board";
+import Mypage from "../screens/Mypage";
 
 const Nav = createNativeStackNavigator();
 const Root = () => (
@@ -23,6 +25,7 @@ const Root = () => (
     <Nav.Screen
       options={{
         headerTitle: "일단냥",
+        animation: "fade",
       }}
       name="Home"
       component={Home}
@@ -38,6 +41,22 @@ const Root = () => (
       component={Setting}
     />
     <Nav.Screen name="Web" component={Web} />
+    <Nav.Screen
+      options={{
+        headerTitle: "게시판",
+        animation: "fade",
+      }}
+      name="Board"
+      component={Board}
+    />
+    <Nav.Screen
+      options={{
+        headerTitle: "내 정보",
+        animation: "fade",
+      }}
+      name="Mypage"
+      component={Mypage}
+    />
   </Nav.Navigator>
 );
 

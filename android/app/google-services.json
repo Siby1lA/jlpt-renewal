@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "375262444333",
+    "project_id": "ildannyang",
+    "storage_bucket": "ildannyang.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375262444333:android:005f92c52256d5988cb1a4",
+        "android_client_info": {
+          "package_name": "com.jlpt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "375262444333-opgqb7t6qt9c7b18u0qrmq3a4bad6gtg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jlpt",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "375262444333-2r17soi2o2qae86fvq5ke65ili1llmjs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABGNwyf7Q8pELKsUSZm2n2opgykiCBSeY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "375262444333-2r17soi2o2qae86fvq5ke65ili1llmjs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "375262444333-t1u7v1qf0gga9epp376q9ckph58crd7a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.name.jlpt",
+                "app_store_id": "1669536727"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
